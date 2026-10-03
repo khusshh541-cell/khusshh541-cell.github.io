@@ -69,9 +69,29 @@
   <main class="page">
 
     <!-- ===== 01 HERO ===== -->
-    <section class="hero" id="top" aria-label="Introduction">
+    <section class="hero hero--story" id="top" aria-label="Introduction">
       <div class="hero__stage">
+        <div class="hero__scenes" aria-hidden="true">
+          <figure class="scene scene--clay">
+            <picture>
+              <source media="(max-width: 768px)" srcset="assets/img/jali/jali-light.webp">
+              <img src="assets/img/jali/jali-pavilion.webp" alt="" decoding="async" fetchpriority="high">
+            </picture>
+          </figure>
+          <div class="scene scene--network"><div class="net-grid"></div></div>
+          <figure class="scene scene--pub">
+            <img src="assets/img/work/almanack/live-music-full.jpg" alt="" loading="lazy" decoding="async">
+          </figure>
+          <div class="hero__shade"></div>
+        </div>
+
         <p class="hero__kicker mono">Khushi Mehta · Marketing Strategist · London</p>
+        <p class="hero__prompt mono" aria-hidden="true">Scroll</p>
+        <ol class="hero__captions" aria-hidden="true">
+          <li><span class="mono">01 / Belagavi, India</span>It started with clay: our family's Jali tiles.</li>
+          <li><span class="mono">02 / Bangalore</span>300+ creators. Zero playbook.</li>
+          <li><span class="mono">03 / Coventry &amp; Kenilworth</span>Then the rooms started filling up.</li>
+        </ol>
 
         <div class="hero__copy">
           <h1 class="hero__title" data-split="chars">From nothing<br> to <span class="hero__em"><em>noticed.</em><svg class="hero__underline" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M 4 14 C 60 6, 120 18, 180 11 C 220 7, 262 9, 296 12"/></svg></span></h1>

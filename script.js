@@ -103,26 +103,89 @@
   });
 
   /* ==========================================================================
-     2. HERO: the headline, revealed once the page is ready
+     2. HERO: three real scenes (clay → creators → a full room), then the headline
      ========================================================================== */
+  const hero = qs('.hero');
   const heroTitle = qs('.hero__title');
   const heroCopy = qs('.hero__copy');
   const heroUnderline = qs('.hero__underline path');
-  const filmDark = false;
-  let heroReveal = null;
+  const REVEAL_AT = 0.86;
+  let filmDark = !reduce;
+  let heroStart = () => {};
+
+  function buildNetworkGrid() {
+    const grid = qs('.net-grid');
+    const cells = [];
+    for (let i = 0; i < 300; i++) {
+      const c = document.createElement('span');
+      grid.appendChild(c);
+      cells.push(c);
+    }
+    // light the tiles in a scattered (but repeatable) order
+    const order = cells.map((c) => ({ c, k: rand() })).sort((a, b) => a.k - b.k).map((o) => o.c);
+    let lit = 0;
+    return (fraction) => {
+      const want = Math.round(clamp(fraction, 0, 1) * order.length);
+      while (lit < want) order[lit++].classList.add('is-on');
+      while (lit > want) order[--lit].classList.remove('is-on');
+    };
+  }
 
   function setupHero() {
     splitText(heroTitle, true);
     heroTitle.classList.add('split-chars');
-    if (reduce) { gsap.set(heroUnderline, { strokeDashoffset: 0 }); return; }
+    if (reduce) { hero.classList.add('hero--static'); gsap.set(heroUnderline, { strokeDashoffset: 0 }); return; }
+
+    const [clay, network, pub] = qsa('.scene');
+    const caps = qsa('.hero__captions li');
+    const lightTiles = buildNetworkGrid();
     gsap.set(heroCopy, { autoAlpha: 0 });
-    heroReveal = gsap.timeline({ paused: true })
+    gsap.set([network, pub], { autoAlpha: 0 });
+
+    const reveal = gsap.timeline({ paused: true })
       .set(heroCopy, { autoAlpha: 1 })
+      .fromTo(qsa('.c', heroTitle), { yPercent: 115, rotate: 7 }, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.022 }, 0)
+      .fromTo(heroUnderline, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' }, 0.6)
+      .fromTo('.hero__sub', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.45)
+      .fromTo('.hero__ctas', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.6);
+
+    // one scroll-scrubbed timeline, length 1 = the whole pinned hero
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+    tl.to('.hero__prompt', { autoAlpha: 0, duration: 0.04 }, 0.02)
+      .fromTo(qs('img', clay), { scale: 1.14 }, { scale: 1, duration: 0.32 }, 0)
+      .to(network, { autoAlpha: 1, duration: 0.05 }, 0.28)
+      .to(clay, { autoAlpha: 0, duration: 0.05 }, 0.31)
+      .to(pub, { autoAlpha: 1, duration: 0.05 }, 0.58)
+      .fromTo(qs('img', pub), { scale: 1.12 }, { scale: 1, duration: 0.3 }, 0.56)
+      .to(network, { autoAlpha: 0, duration: 0.05 }, 0.61)
+      .to(['.hero__scenes', '.hero__kicker'], { autoAlpha: 0, duration: 0.06 }, REVEAL_AT - 0.08);
+    [[0.02, 0.27], [0.33, 0.57], [0.62, 0.79]].forEach(([a, b], i) => {
+      tl.fromTo(caps[i], { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.04, ease: 'power2.out' }, a)
+        .to(caps[i], { autoAlpha: 0, y: -20, duration: 0.04, ease: 'power2.in' }, b - 0.04);
+    });
+    tl.set({}, {}, 1);
+
+    let revealed = false;
+    ScrollTrigger.create({
+      trigger: hero,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.5,
+      onUpdate(self) {
+        const p = self.progress;
+        tl.progress(p);
+        lightTiles((p - 0.33) / 0.22);
+        filmDark = p < REVEAL_AT - 0.04;
+        updateNavTheme();
+        if (p >= REVEAL_AT && !revealed) { revealed = true; reveal.timeScale(1).play(); }
+        else if (p < REVEAL_AT - 0.05 && revealed) { revealed = false; reveal.timeScale(2.2).reverse(); }
+      }
+    });
+
+    heroStart = () => gsap.timeline()
       .from('.hero__kicker', { autoAlpha: 0, y: 14, duration: 1 }, 0)
-      .fromTo(qsa('.c', heroTitle), { yPercent: 115, rotate: 7 }, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.022 }, 0.1)
-      .fromTo(heroUnderline, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' }, 0.7)
-      .fromTo('.hero__sub', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.55)
-      .fromTo('.hero__ctas', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.7);
+      .from('.hero__prompt', { autoAlpha: 0, y: 14, duration: 1 }, 0.2)
+      .from(caps[0], { autoAlpha: 0, y: 20, duration: 1 }, 0.35);
   }
 
   /* ==========================================================================
@@ -695,7 +758,7 @@
       pre.remove();
     } else {
       gsap.to(pre, { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut', onComplete: () => pre.remove() });
-      gsap.delayedCall(0.45, () => heroReveal && heroReveal.play());
+      gsap.delayedCall(0.45, () => heroStart());
     }
 
     // refresh once lazy images settle

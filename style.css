@@ -304,6 +304,24 @@
   .hero__captions b { display: block; color: var(--orange); font-weight: 500; margin-bottom: 4px; }
   .hero--film .hero__captions li, .hero--film .hero__kicker, .hero--film .hero__prompt { color: var(--cream); text-shadow: 0 1px 12px rgba(0,0,0,.35); }
 
+  /* hero story: clay → creators → a full room */
+  .hero--story { height: 420vh; }
+  .hero__scenes { position: absolute; inset: 0; z-index: 1; background: var(--ink); }
+  .scene { position: absolute; inset: 0; margin: 0; overflow: hidden; }
+  .scene img, .scene picture { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scene img { filter: saturate(1.05) contrast(1.02); transform-origin: 50% 60%; will-change: transform; }
+  .hero__shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(31,26,23,.45) 0%, rgba(31,26,23,0) 28%, rgba(31,26,23,0) 50%, rgba(31,26,23,.72) 100%); }
+  .scene--network { background: var(--teal); display: grid; place-items: center; padding-bottom: 14vh; }
+  .net-grid { display: grid; grid-template-columns: repeat(25, 1fr); gap: clamp(4px, .6vw, 9px); width: min(56vw, 780px); }
+  .net-grid span { aspect-ratio: 1; border-radius: 3px; border: 1px solid rgba(246,239,227,.16); transition: background-color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease); }
+  .net-grid span.is-on { background: var(--orange); border-color: var(--orange); transform: scale(.86); }
+  .hero--story .hero__kicker, .hero--story .hero__prompt { color: var(--cream); z-index: 3; }
+  .hero--story .hero__prompt { font-size: .8rem; }
+  .hero--story .hero__captions { z-index: 3; bottom: clamp(32px, 7vh, 72px); width: min(720px, calc(100% - 2 * var(--side))); }
+  .hero__captions li { color: var(--cream); font-family: var(--f-display); font-weight: 300; font-size: clamp(1.7rem, 3.4vw, 3.2rem); line-height: 1.08; letter-spacing: -.02em; }
+  .hero__captions li .mono { display: block; font-family: var(--f-body); font-style: normal; font-size: .75rem; letter-spacing: .14em; color: #F6B08F; margin-bottom: 12px; }
+  .hero--static .hero__scenes, .hero--static .hero__captions, .hero--static .hero__prompt { display: none; }
+  .hero--static { height: 100vh; height: 100svh; }
   .hero__copy { position: relative; z-index: 2; padding-inline: var(--side); padding-top: var(--nav-h); }
   .hero__title { font-size: var(--fs-mega); font-weight: 300; line-height: .86; letter-spacing: -.045em; }
   .hero__em { position: relative; display: inline-block; }
@@ -648,7 +666,8 @@
     .nav__name { font-size: 1.15rem; }
     .br-desk { display: none; }
 
-    .hero--svg { height: 240vh; }
+    .hero--story { height: 360vh; }
+    .net-grid { grid-template-columns: repeat(15, 1fr); width: 86vw; }
     .hero--film { height: 320vh; }
     .hero__title { font-size: 17vw; }
     .hero__captions { bottom: 96px; width: calc(100% - 2 * var(--side)); }
