@@ -344,14 +344,6 @@
         autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.1,
         scrollTrigger: { trigger: '.work__grid', start: 'top 80%', once: true }
       });
-      gsap.fromTo('.service', { autoAlpha: 0, y: 30 }, {
-        autoAlpha: 1, y: 0, duration: 1, stagger: 0.08,
-        scrollTrigger: { trigger: '.services__list', start: 'top 82%', once: true }
-      });
-      gsap.fromTo('.agent__flow li', { autoAlpha: 0, x: -16 }, {
-        autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.12,
-        scrollTrigger: { trigger: '.agent', start: 'top 75%', once: true }
-      });
       gsap.fromTo('.cta__email-row, .cta__actions', { autoAlpha: 0 }, {
         autoAlpha: 1, duration: 1.2, stagger: 0.15, delay: 0.4,
         scrollTrigger: { trigger: '.cta', start: 'top 60%', once: true }
@@ -745,7 +737,6 @@
     setupResponsiveMotion();
     setupNav();
     setupMagnetic();
-    setupServices();
     setupCopy();
     setupFooter();
     setupCases();
