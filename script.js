@@ -99,472 +99,30 @@
     const target = href.length > 1 && qs(href);
     if (!target) return;
     e.preventDefault();
-    // For the hero, land after the film so the headline is showing
     scrollToTarget(target);
   });
 
   /* ==========================================================================
-     2. HERO: film (frames → video → SVG fallback)
+     2. HERO: the headline, revealed once the page is ready
      ========================================================================== */
-  const hero = qs('.hero');
-  const stage = qs('.hero__stage');
-  const canvas = qs('.hero__canvas');
-  const ctx = canvas.getContext('2d');
-  const filmSvg = qs('.hero__film');
-  const heroCopy = qs('.hero__copy');
   const heroTitle = qs('.hero__title');
+  const heroCopy = qs('.hero__copy');
   const heroUnderline = qs('.hero__underline path');
-  const REVEAL_AT = 0.84;
-  let heroMode = 'svg';
-  let filmDark = false;
+  const filmDark = false;
+  let heroReveal = null;
 
-  async function detectFilm() {
-    let count = parseInt(canvas.dataset.frameCount, 10) || 0;
-    let mobileCount = 0;
-    let wantVideo = true; // unknown manifest (e.g. file://) → still try the video
-    let clipSrcs = (canvas.dataset.clips || '').split(',').map((s) => s.trim()).filter(Boolean);
-    try {
-      const r = await withTimeout(fetch('assets/frames/manifest.json', { cache: 'no-store' }), 1500);
-      if (r && r.ok) {
-        const j = await r.json();
-        count = j.count || count;
-        mobileCount = j.mobileCount || 0;
-        wantVideo = j.video === true;
-        if (Array.isArray(j.clips)) clipSrcs = j.clips;
-      }
-    } catch (_) { /* file:// or missing manifest */ }
-    if (count > 0) return { mode: 'frames', count, mobileCount };
-
-    // separate scene clips, scrubbed one after another
-    if (clipSrcs.length) {
-      const clips = await Promise.all(clipSrcs.map((src) => new Promise((resolve) => {
-        const v = document.createElement('video');
-        v.muted = true; v.playsInline = true; v.preload = 'auto';
-        const t = setTimeout(() => resolve(null), 4000);
-        v.addEventListener('loadeddata', () => { clearTimeout(t); resolve(v); }, { once: true });
-        v.addEventListener('error', () => { clearTimeout(t); resolve(null); }, { once: true });
-        v.src = src;
-      })));
-      if (clips.every(Boolean)) return { mode: 'clips', clips };
-    }
-    if (!wantVideo) return { mode: 'svg' };
-
-    const video = await new Promise((resolve) => {
-      const v = document.createElement('video');
-      v.muted = true; v.playsInline = true; v.preload = 'auto';
-      const done = (ok) => { clearTimeout(t); resolve(ok ? v : null); };
-      const t = setTimeout(() => done(false), 2000);
-      v.addEventListener('loadeddata', () => done(true), { once: true });
-      v.addEventListener('error', () => done(false), { once: true });
-      v.src = 'assets/video/journey-scrub.mp4';
-    });
-    if (video) return { mode: 'video', video };
-    return { mode: 'svg' };
-  }
-
-  // ----- canvas rendering (shared by frames + video modes)
-  let dpr = 1;
-  function sizeCanvas() {
-    dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : 2);
-    canvas.width = Math.round(stage.clientWidth * dpr);
-    canvas.height = Math.round(stage.clientHeight * dpr);
-  }
-  function drawCover(src, sw, sh) {
-    if (!src || !sw) return;
-    const cw = canvas.width, ch = canvas.height;
-    const s = Math.max(cw / sw, ch / sh);
-    const w = sw * s, h = sh * s;
-    ctx.drawImage(src, (cw - w) / 2, (ch - h) / 2, w, h);
-  }
-
-  // ----- frames
-  let frames = [];
-  let frameCount = 0;
-  let frameTarget = 0, frameCurrent = 0, lastDrawn = -1;
-
-  function frameUrl(i, dir) { return `assets/frames/${dir}/f_${String(i + 1).padStart(4, '0')}.webp`; }
-
-  async function loadFrames(count, dir) {
-    frameCount = count;
-    frames = new Array(count);
-    const load = (i) => new Promise((res) => {
-      if (frames[i]) return res();
-      const img = new Image();
-      img.decoding = 'async';
-      img.onload = () => { frames[i] = img; res(); };
-      img.onerror = () => res();
-      img.src = frameUrl(i, dir);
-    });
-    const order = [];
-    const seen = new Set();
-    [10, 5, 1].forEach((step) => { for (let i = 0; i < count; i += step) if (!seen.has(i)) { seen.add(i); order.push(i); } });
-    const firstBatch = order.slice(0, Math.ceil(count / 10));
-    const rest = order.slice(firstBatch.length);
-    await Promise.all(firstBatch.map(load));
-    // background fill with limited concurrency
-    (async () => {
-      const queue = rest.slice();
-      const worker = async () => { while (queue.length) await load(queue.shift()); };
-      await Promise.all(Array.from({ length: 6 }, worker));
-    })();
-  }
-  function nearestFrame(i) {
-    for (let d = 0; d < frameCount; d++) {
-      if (frames[i - d]) return frames[i - d];
-      if (frames[i + d]) return frames[i + d];
-    }
-    return null;
-  }
-  function drawFrame(i) {
-    const img = nearestFrame(i);
-    if (img) drawCover(img, img.naturalWidth, img.naturalHeight);
-  }
-
-  // ----- SVG film (fallback, also the designed default until real footage exists)
-  function buildFilmSvg() {
-    const nodesG = qs('.act2__nodes', filmSvg);
-    const linksG = qs('.act2__links', filmSvg);
-    const rainG = qs('.act3__rain', filmSvg);
-    const NS = 'http://www.w3.org/2000/svg';
-    const pts = [];
-    let guard = 0;
-    while (pts.length < 22 && guard++ < 2000) {
-      const p = { x: 130 + rand() * 940, y: 130 + rand() * 520 };
-      if (pts.every((q) => Math.hypot(q.x - p.x, q.y - p.y) > 120)) pts.push(p);
-    }
-    // nearest-neighbour chain from the entry point = "threading beads"
-    const chain = [];
-    let cur = { x: 250, y: 600 };
-    const pool = pts.slice();
-    while (pool.length) {
-      pool.sort((a, b) => Math.hypot(a.x - cur.x, a.y - cur.y) - Math.hypot(b.x - cur.x, b.y - cur.y));
-      cur = pool.shift();
-      chain.push(cur);
-    }
-    const linkPath = (a, b, bend) => {
-      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-      const nx = -(b.y - a.y) * bend, ny = (b.x - a.x) * bend;
-      return `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${(mx + nx).toFixed(1)} ${(my + ny).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
-    };
-    let prev = { x: 250, y: 600 };
-    chain.forEach((p, i) => {
-      const path = document.createElementNS(NS, 'path');
-      path.setAttribute('d', linkPath(prev, p, i % 2 ? 0.18 : -0.18));
-      path.setAttribute('pathLength', '1');
-      linksG.appendChild(path);
-      prev = p;
-    });
-    // a few cross-links to turn the chain into a web
-    for (let i = 0; i < chain.length - 4; i += 3) {
-      const path = document.createElementNS(NS, 'path');
-      path.setAttribute('d', linkPath(chain[i], chain[i + 4], 0.12));
-      path.setAttribute('pathLength', '1');
-      path.classList.add('is-cross');
-      linksG.appendChild(path);
-    }
-    chain.forEach((p) => {
-      const g = document.createElementNS(NS, 'g');
-      g.innerHTML = '<g class="node"><rect x="-17" y="-27" width="34" height="54" rx="7"/><circle cx="0" cy="-9" r="6.5"/><line x1="-9" y1="6" x2="9" y2="6"/><line x1="-9" y1="14" x2="4" y2="14"/></g>';
-      nodesG.appendChild(g);
-      gsap.set(g, { x: p.x, y: p.y });
-    });
-    for (let i = 0; i < 46; i++) {
-      const l = document.createElementNS(NS, 'line');
-      const x = rand() * 1300 - 50, y = rand() * 900 - 100;
-      l.setAttribute('x1', x); l.setAttribute('y1', y);
-      l.setAttribute('x2', x - 7); l.setAttribute('y2', y + 30);
-      rainG.appendChild(l);
-    }
-  }
-
-  function buildHeroTimeline() {
-    const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
-    const caps = qsa('.hero__captions li');
-    const windows = [[0.02, 0.27], [0.32, 0.57], [0.62, 0.8]];
-    tl.to('.hero__prompt', { autoAlpha: 0, duration: 0.04 }, 0.03);
-    caps.forEach((li, i) => {
-      const [a, b] = windows[i];
-      tl.fromTo(li, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.035, ease: 'power2.out' }, a);
-      tl.to(li, { autoAlpha: 0, y: -18, duration: 0.035, ease: 'power2.in' }, b - 0.035);
-    });
-    tl.to('.hero__kicker', { autoAlpha: 0, duration: 0.04 }, 0.78);
-
-    if (heroMode === 'svg') {
-      const act1 = qs('.act--1', filmSvg), act2 = qs('.act--2', filmSvg), act3 = qs('.act--3', filmSvg);
-      const links = qsa('.act2__links path', filmSvg);
-      const nodes = qsa('.act2__nodes > g', filmSvg);
-      const nodeInner = qsa('.act2__nodes .node', filmSvg);
-      gsap.set([act2, act3], { autoAlpha: 0 });
-      gsap.set(nodeInner, { scale: 0, transformOrigin: '50% 50%' });
-      gsap.set(act2, { scale: 1.35, transformOrigin: '50% 50%' });
-
-      // Act 1: the workshop (pot already drawn by the intro)
-      tl.to('.act1__spin', { strokeDashoffset: 0, duration: 0.07, stagger: 0.02 }, 0.02)
-        .to('.act1__glow', { scale: 1.25, transformOrigin: '50% 50%', duration: 0.24 }, 0)
-        .to('.act1__peel', { strokeDashoffset: 0, duration: 0.12 }, 0.12)
-        .to(act1, { autoAlpha: 0, y: -60, duration: 0.05 }, 0.27);
-
-      // Act 2: the network
-      tl.to(act2, { autoAlpha: 1, duration: 0.02 }, 0.29)
-        .to('.act2__enter', { strokeDashoffset: 0, duration: 0.05 }, 0.3)
-        .to(act2, { scale: 1, duration: 0.3 }, 0.3)
-        .to(nodeInner, { scale: 1, duration: 0.012, stagger: 0.006, ease: 'back.out(2)' }, 0.33);
-      links.forEach((p, i) => {
-        tl.to(p, { strokeDashoffset: 0, duration: 0.02 }, (p.classList.contains('is-cross') ? 0.47 : 0.34) + i * 0.0055);
-      });
-      tl.to(nodes, { x: 600, y: 470, duration: 0.06, ease: 'power2.in', stagger: 0.001 }, 0.56)
-        .to([nodeInner, links], { autoAlpha: 0, duration: 0.04 }, 0.58)
-        .to('.act2__enter', { autoAlpha: 0, duration: 0.03 }, 0.58);
-
-      // Act 3: the launch
-      tl.to(act3, { autoAlpha: 1, duration: 0.02 }, 0.6)
-        .to('.act3__streak', { strokeDashoffset: 0, duration: 0.07 }, 0.6)
-        .fromTo('.act3__rain', { autoAlpha: 0, y: -40 }, { autoAlpha: 1, y: 40, duration: 0.12 }, 0.6)
-        .fromTo('.act3__window', { autoAlpha: 0, scale: 0.9, transformOrigin: '50% 50%' }, { autoAlpha: 1, scale: 1.08, duration: 0.14 }, 0.64)
-        .to(act3, { autoAlpha: 0, duration: 0.05 }, 0.79);
-    }
-    // footage hands off to the cream page before the headline arrives
-    if (heroMode !== 'svg') tl.fromTo(canvas, { opacity: 1 }, { opacity: 0, duration: 0.07 }, REVEAL_AT - 0.08);
-    tl.set({}, {}, 1); // timeline length = scroll progress 0 → 1
-    return tl;
-  }
-
-  function buildHeroReveal() {
-    const chars = qsa('.c', heroTitle);
-    const tl = gsap.timeline({ paused: true });
-    tl.set(heroCopy, { autoAlpha: 1 })
-      .fromTo(chars, { yPercent: 115, rotate: 7 }, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.022 }, 0)
-      .fromTo(heroUnderline, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' }, 0.55)
-      .fromTo('.hero__sub', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.45)
-      .fromTo('.hero__ctas', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.6);
-    return tl;
-  }
-
-  async function setupHero() {
+  function setupHero() {
     splitText(heroTitle, true);
     heroTitle.classList.add('split-chars');
-
-    if (reduce) {
-      hero.classList.add('hero--static');
-      gsap.set(heroUnderline, { strokeDashoffset: 0 });
-      return;
-    }
-
-    const film = await detectFilm();
-    heroMode = film.mode;
-
-    if (film.mode === 'frames' || film.mode === 'video' || film.mode === 'clips') {
-      hero.classList.add('hero--film');
-      filmDark = true;
-      sizeCanvas();
-      if (film.mode === 'clips') {
-        // scrub each scene clip in turn; crossfade from a snapshot of the previous scene
-        const clips = film.clips;
-        const snap = document.createElement('canvas');
-        const sctx = snap.getContext('2d');
-        let active = 0, fade = 0, cur = 0;
-        const render = () => {
-          const v = clips[active];
-          drawCover(v, v.videoWidth, v.videoHeight);
-          if (fade > 0) { ctx.globalAlpha = fade; ctx.drawImage(snap, 0, 0); ctx.globalAlpha = 1; }
-        };
-        clips.forEach((v, i) => v.addEventListener('seeked', () => { if (i === active) render(); }));
-        hero._clips = { render };
-        render();
-        gsap.ticker.add(() => {
-          cur += (frameTarget - cur) * 0.2;
-          const n = clips.length;
-          const i = Math.min(n - 1, Math.floor(cur));
-          if (i !== active) {
-            snap.width = canvas.width; snap.height = canvas.height;
-            sctx.drawImage(canvas, 0, 0);
-            fade = 1; active = i;
-          }
-          const v = clips[active];
-          const t = clamp(cur - active, 0, 0.999) * (v.duration || 0);
-          if (!v.seeking && Math.abs(v.currentTime - t) > 0.04) v.currentTime = t;
-          if (fade > 0) { fade = Math.max(0, fade - 0.05); render(); }
-        });
-        frameCount = clips.length;
-      } else if (film.mode === 'frames') {
-        const dir = isMobile() && film.mobileCount ? 'mobile' : 'desktop';
-        await loadFrames(isMobile() && film.mobileCount ? film.mobileCount : film.count, dir);
-        drawFrame(0);
-        gsap.ticker.add(() => {
-          frameCurrent += (frameTarget - frameCurrent) * 0.22;
-          const idx = Math.round(frameCurrent);
-          if (idx !== lastDrawn) { lastDrawn = idx; drawFrame(idx); }
-        });
-      } else {
-        const v = film.video;
-        const draw = () => drawCover(v, v.videoWidth, v.videoHeight);
-        v.addEventListener('seeked', draw);
-        draw();
-        frameCount = 0;
-        hero._video = v;
-      }
-      window.addEventListener('resize', () => {
-        sizeCanvas(); lastDrawn = -1;
-        if (hero._video) drawCover(hero._video, hero._video.videoWidth, hero._video.videoHeight);
-        if (hero._clips) hero._clips.render();
-      });
-    } else {
-      hero.classList.add('hero--svg');
-      buildFilmSvg();
-    }
-
+    if (reduce) { gsap.set(heroUnderline, { strokeDashoffset: 0 }); return; }
     gsap.set(heroCopy, { autoAlpha: 0 });
-    const tl = buildHeroTimeline();
-    const reveal = buildHeroReveal();
-    let revealed = false;
-
-    ScrollTrigger.create({
-      trigger: hero,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: heroMode === 'svg' ? 0.6 : true,
-      onUpdate(self) {
-        const p = self.progress;
-        tl.progress(p);
-        const filmP = clamp(p / REVEAL_AT, 0, 1);
-        if (heroMode === 'frames') frameTarget = filmP * (frameCount - 1);
-        if (heroMode === 'clips') frameTarget = filmP * frameCount;
-        if (heroMode === 'video' && hero._video) {
-          const v = hero._video;
-          const t = filmP * (v.duration || 0);
-          if (!v.seeking && Math.abs(v.currentTime - t) > 0.03) v.currentTime = t;
-        }
-        filmDark = heroMode !== 'svg' && p < REVEAL_AT - 0.02;
-        updateNavTheme();
-        if (p >= REVEAL_AT && !revealed) { revealed = true; reveal.timeScale(1).play(); }
-        else if (p < REVEAL_AT - 0.06 && revealed) { revealed = false; reveal.timeScale(2.2).reverse(); }
-      }
-    });
-  }
-
-  function heroIntro() {
-    if (reduce) return;
-    const tl = gsap.timeline();
-    tl.from('.hero__kicker', { autoAlpha: 0, y: 14, duration: 1 }, 0.1)
-      .from('.hero__prompt', { autoAlpha: 0, y: 14, duration: 1 }, 0.3);
-    if (heroMode === 'svg') {
-      tl.fromTo('.act1__glow', { autoAlpha: 0, scale: 0.6, transformOrigin: '50% 50%' }, { autoAlpha: 1, scale: 1, duration: 2 }, 0)
-        .to('.act1__pot', { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, 0.1)
-        .to('.act1__rim', { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut' }, 1.6)
-        .from('.act1__wheel', { autoAlpha: 0, duration: 1.2 }, 0.6);
-      gsap.to('.act1__wheel', { strokeDashoffset: -1, duration: 5, ease: 'none', repeat: -1 });
-    }
-  }
-
-  /* ==========================================================================
-     3. THE THREAD: one orange line from the hero underline to the email
-     ========================================================================== */
-  const page = qs('.page');
-  const threadSvg = qs('.thread');
-  const threadPath = qs('.thread__path');
-  let threadSamples = null, threadLen = 0;
-
-  function buildThread() {
-    const pageR = page.getBoundingClientRect();
-    const W = page.clientWidth;
-    const H = page.scrollHeight;
-    threadSvg.setAttribute('width', W);
-    threadSvg.setAttribute('height', H);
-    threadSvg.style.height = H + 'px';
-
-    // start: the hero underline, at the moment the stage releases
-    const ur = qs('.hero__underline').getBoundingClientRect();
-    const sr = stage.getBoundingClientRect();
-    const stageFinalTop = hero.offsetTop + hero.offsetHeight - stage.offsetHeight;
-    let px = ur.right - sr.left - 6;
-    let py = stageFinalTop + (ur.top - sr.top) + ur.height * 0.55;
-    let d = `M ${px.toFixed(1)} ${py.toFixed(1)}`;
-
-    const f = (n) => n.toFixed(1);
-    const C = (x1, y1, x2, y2, x, y) => { d += ` C ${f(x1)} ${f(y1)}, ${f(x2)} ${f(y2)}, ${f(x)} ${f(y)}`; px = x; py = y; };
-    // vertical tangents: travel down margins
-    const curveTo = (x, y) => {
-      const k = Math.max(90, Math.abs(y - py) * 0.5);
-      C(px, py + k, x, y - k, x, y);
-    };
-    // vertical departure, horizontal arrival moving in direction `dir` (+1 right, -1 left)
-    // drop straight down the margin, turn a soft corner, then run along the baseline
-    const sweepTo = (x, y, dir) => {
-      const R = 46;
-      const dy = y - R - py;
-      if (dy > 0) C(px, py + dy / 3, px, y - R - dy / 3, px, y - R);
-      C(px, y - R * 0.45, px + dir * R * 0.45, y, px + dir * R, y);
-      const run = x - px;
-      C(px + run * 0.35, y + 3, px + run * 0.7, y - 3, x, y);
-    };
-    // horizontal tangents: glide across a gap
-    const glideTo = (x, y) => {
-      const dx = (x - px) * 0.5;
-      C(px + dx, py, x - dx, y, x, y);
-    };
-
-    qsa('[data-thread]').forEach((el) => {
-      if (!el.getClientRects().length) return;
-      const r = el.getBoundingClientRect();
-      const x = r.left - pageR.left, y = r.top - pageR.top;
-      const type = el.dataset.thread;
-      if (type === 'point') {
-        if (el.dataset.dir === 'h') glideTo(x, y); else curveTo(x, y);
-      } else if (type === 'under') {
-        // hand-drawn underline, drawn in the direction the thread arrives from
-        const by = y + r.height + 5;
-        const fromLeft = px < x + r.width / 2;
-        const xs = fromLeft ? x - 14 : x + r.width + 16;
-        const xe = fromLeft ? x + r.width + 16 : x - 14;
-        const dir = fromLeft ? 1 : -1;
-        sweepTo(xs, by, dir);
-        const w = xe - xs;
-        C(xs + w * 0.3, by + 7, xs + w * 0.62, by - 6, xe, by + 2);
-      } else if (type === 'loop') {
-        // arrive horizontally from the right, circle 1¼ times, leave down the left side
-        const cx = x + r.width / 2, cy = y + r.height / 2;
-        const rx = Math.min(Math.max(r.width / 2 + 34, r.width * 0.71), cx - 8), ry = r.height * 0.71, k = 0.5523;
-        const topY = cy - ry;
-        C(px - (px - cx) * 0.5, py, cx + rx * 0.6, topY, cx, topY);
-        C(cx - k * rx, topY, cx - rx, cy - k * ry, cx - rx, cy);
-        C(cx - rx, cy + k * ry, cx - k * rx, cy + ry, cx, cy + ry);
-        C(cx + k * rx, cy + ry, cx + rx, cy + k * ry, cx + rx, cy);
-        C(cx + rx, cy - k * ry * 1.1, cx + k * rx, cy - ry * 1.08, cx - rx * 0.05, cy - ry * 1.06);
-        C(cx - k * rx * 1.1, cy - ry * 1.04, cx - rx * 1.08, cy - k * ry, cx - rx * 1.06, cy + ry * 0.1);
-      }
-    });
-
-    threadPath.setAttribute('d', d);
-    threadLen = threadPath.getTotalLength();
-    threadPath.style.strokeDasharray = `${threadLen} ${threadLen}`;
-
-    // sample: running max of y per length, so we can draw "just ahead of the reader"
-    const n = Math.max(2, Math.ceil(threadLen / 10));
-    const lens = new Float32Array(n + 1), maxY = new Float32Array(n + 1);
-    let m = -Infinity;
-    for (let i = 0; i <= n; i++) {
-      const l = (threadLen * i) / n;
-      const pt = threadPath.getPointAtLength(l);
-      m = Math.max(m, pt.y);
-      lens[i] = l; maxY[i] = m;
-    }
-    threadSamples = { lens, maxY, n };
-    updateThread();
-  }
-
-  function updateThread() {
-    if (!threadSamples) return;
-    if (reduce) { threadPath.style.strokeDashoffset = 0; return; }
-    const pageTop = page.getBoundingClientRect().top;
-    const target = -pageTop + window.innerHeight * 0.62;
-    const { lens, maxY, n } = threadSamples;
-    let lo = 0, hi = n, ans = -1;
-    while (lo <= hi) {
-      const mid = (lo + hi) >> 1;
-      if (maxY[mid] <= target) { ans = mid; lo = mid + 1; } else hi = mid - 1;
-    }
-    const drawn = ans < 0 ? 0 : lens[ans];
-    threadPath.style.strokeDashoffset = threadLen - drawn;
+    heroReveal = gsap.timeline({ paused: true })
+      .set(heroCopy, { autoAlpha: 1 })
+      .from('.hero__kicker', { autoAlpha: 0, y: 14, duration: 1 }, 0)
+      .fromTo(qsa('.c', heroTitle), { yPercent: 115, rotate: 7 }, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.022 }, 0.1)
+      .fromTo(heroUnderline, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' }, 0.7)
+      .fromTo('.hero__sub', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.55)
+      .fromTo('.hero__ctas', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.7);
   }
 
   /* ==========================================================================
@@ -658,8 +216,6 @@
      ========================================================================== */
   const story = qs('.story');
   const track = qs('.story__track');
-  const storyThread = qs('.story__thread');
-  const storyPath = qs('.story__thread path');
 
   function setupResponsiveMotion() {
     const mm = gsap.matchMedia();
@@ -680,24 +236,6 @@
       sizeStory();
       ScrollTrigger.addEventListener('refreshInit', sizeStory);
 
-      const buildStoryThread = () => {
-        const W = track.scrollWidth, H = track.clientHeight;
-        storyThread.setAttribute('width', W);
-        storyThread.setAttribute('height', H);
-        storyThread.style.width = W + 'px';
-        let d = `M 0 ${(H * 0.86).toFixed(1)}`;
-        for (let x = 40; x <= W; x += 40) {
-          const y = H * 0.86 + Math.sin((x / W) * Math.PI * 9) * 26 + Math.sin(x / 170) * 6;
-          d += ` L ${x} ${y.toFixed(1)}`;
-        }
-        storyPath.setAttribute('d', d);
-        const L = storyPath.getTotalLength();
-        storyPath.style.strokeDasharray = `${L} ${L}`;
-        storyPath.style.strokeDashoffset = L;
-        storyPath._len = L;
-      };
-      buildStoryThread();
-
       const tween = gsap.to(track, {
         x: () => -dist(),
         ease: 'none',
@@ -706,14 +244,7 @@
           start: 'top top',
           end: () => `+=${dist()}`,
           scrub: true,
-          invalidateOnRefresh: true,
-          onRefresh: buildStoryThread,
-          onUpdate(self) {
-            const L = storyPath._len || 0;
-            const W = track.scrollWidth;
-            const seen = (self.progress * dist() + window.innerWidth * 0.75) / W;
-            storyPath.style.strokeDashoffset = L * (1 - clamp(seen, 0, 1));
-          }
+          invalidateOnRefresh: true
         }
       });
 
@@ -740,7 +271,6 @@
     });
 
     mm.add('(max-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-      gsap.fromTo(track, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { trigger: track, start: 'top 70%', end: 'bottom 70%', scrub: true } });
       qsa('.chapter, .story__intro, .story__outro, .pillar').forEach((el) => {
         gsap.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
       });
@@ -767,27 +297,6 @@
   }
 
   /* ==========================================================================
-     7. MARQUEE (velocity-linked)
-     ========================================================================== */
-  function setupMarquee() {
-    const tr = qs('.marquee__track');
-    if (!tr) return;
-    if (reduce) return;
-    let x = 0, visible = false;
-    const skew = gsap.quickTo(tr, 'skewX', { duration: 0.5, ease: 'power3.out' });
-    ScrollTrigger.create({ trigger: '.marquee', start: 'top bottom', end: 'bottom top', onToggle: (s) => { visible = s.isActive; } });
-    gsap.ticker.add((_, dt) => {
-      if (!visible) return;
-      const v = lenis ? lenis.velocity : 0;
-      const half = tr.scrollWidth / 2;
-      x -= (0.05 + Math.min(Math.abs(v) * 0.04, 1.2)) * dt;
-      if (x <= -half) x += half;
-      gsap.set(tr, { x });
-      skew(clamp(-v * 0.25, -6, 6));
-    });
-  }
-
-  /* ==========================================================================
      8. INTERACTIONS
      ========================================================================== */
   const nav = qs('.nav');
@@ -805,7 +314,6 @@
         nav.classList.toggle('is-hidden', y > lastY && y > 240);
       }
       lastY = y;
-      updateThread();
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -823,31 +331,6 @@
       trigger: '#stats', start: 'top 80%', endTrigger: '#contact', end: 'top 85%',
       toggleClass: { targets: '.mbar', className: 'is-on' }
     });
-  }
-
-  function setupCursor() {
-    if (!finePointer) return;
-    root.classList.add('has-cursor');
-    const cur = qs('.cursor');
-    const dot = qs('.cursor__dot');
-    const ring = qs('.cursor__ring');
-    const label = qs('.cursor__label');
-    const dx = gsap.quickTo(dot, 'x', { duration: 0.08, ease: 'power3' });
-    const dy = gsap.quickTo(dot, 'y', { duration: 0.08, ease: 'power3' });
-    const rx = gsap.quickTo(ring, 'x', { duration: reduce ? 0.01 : 0.45, ease: 'power3' });
-    const ry = gsap.quickTo(ring, 'y', { duration: reduce ? 0.01 : 0.45, ease: 'power3' });
-    gsap.set(cur, { autoAlpha: 0 });
-    window.addEventListener('pointermove', (e) => { if (!cur._on) { cur._on = true; gsap.set([dot, ring], { x: e.clientX, y: e.clientY }); gsap.to(cur, { autoAlpha: 1, duration: 0.3 }); } dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); }, { passive: true });
-    document.addEventListener('pointerover', (e) => {
-      const t = e.target.closest('a, button, [data-cursor]');
-      const lbl = t && t.dataset.cursor;
-      cur.classList.toggle('is-label', !!lbl);
-      cur.classList.toggle('is-link', !!t && !lbl);
-      label.textContent = lbl || '';
-      cur.classList.toggle('on-dark', !!e.target.closest('[data-theme="dark"], .tone-teal, .tone-ink, .tone-orange, .tone-terracotta, .case__backdrop, .lightbox'));
-    });
-    document.addEventListener('pointerleave', () => gsap.to(cur, { autoAlpha: 0, duration: 0.2 }));
-    document.addEventListener('pointerenter', () => { if (cur._on) gsap.to(cur, { autoAlpha: 1, duration: 0.2 }); });
   }
 
   function setupMagnetic() {
@@ -1194,11 +677,10 @@
 
     setupReveals();
     setupStats();
-    await withTimeout(Promise.all([setupHero(), document.fonts ? document.fonts.ready : null]), 3500);
+    setupHero();
+    await withTimeout(document.fonts ? document.fonts.ready : Promise.resolve(), 3500);
     setupResponsiveMotion();
-    setupMarquee();
     setupNav();
-    setupCursor();
     setupMagnetic();
     setupServices();
     setupCopy();
@@ -1207,15 +689,13 @@
 
     await warm;
     await gsap.to(counter, { v: 100, duration: reduce ? 0.1 : 0.45, ease: 'power2.inOut', onUpdate: render });
-
-    ScrollTrigger.addEventListener('refresh', buildThread);
     ScrollTrigger.refresh();
 
     if (reduce) {
       pre.remove();
     } else {
       gsap.to(pre, { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut', onComplete: () => pre.remove() });
-      gsap.delayedCall(0.5, heroIntro);
+      gsap.delayedCall(0.45, () => heroReveal && heroReveal.play());
     }
 
     // refresh once lazy images settle

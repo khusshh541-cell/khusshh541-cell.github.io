@@ -15,7 +15,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:opsz,wght@9..40,400..600&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..600&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&display=swap">
   <link rel="stylesheet" href="style.css">
 
   <script>document.documentElement.classList.add('js');</script>
@@ -54,11 +54,10 @@
 
   <div class="grain" aria-hidden="true"></div>
   <div class="progress" aria-hidden="true"><span></span></div>
-  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"><span class="cursor__label"></span></span></div>
 
   <!-- ===== Nav ===== -->
   <header class="nav">
-    <a class="nav__name" href="#top" data-cursor="Top">Khushi <em>Mehta</em></a>
+    <a class="nav__name" href="#top">Khushi <em>Mehta</em></a>
     <nav class="nav__links" aria-label="Primary">
       <a href="#work" class="u-link">Work</a>
       <a href="#story" class="u-link">Story</a>
@@ -68,58 +67,11 @@
   </header>
 
   <main class="page">
-    <svg class="thread" aria-hidden="true"><path class="thread__path"/></svg>
 
-    <!-- ===== 01 HERO / FILM ===== -->
+    <!-- ===== 01 HERO ===== -->
     <section class="hero" id="top" aria-label="Introduction">
       <div class="hero__stage">
-        <canvas class="hero__canvas" data-frame-count="0" data-clips="assets/video/scene-1.mp4,assets/video/scene-2.mp4,assets/video/scene-3.mp4" aria-hidden="true"></canvas>
-
-        <svg class="hero__film" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <defs>
-            <radialGradient id="kiln" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#D9541E" stop-opacity=".35"/>
-              <stop offset="100%" stop-color="#D9541E" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <!-- Act 1: the workshop -->
-          <g class="act act--1">
-            <circle class="act1__glow" cx="600" cy="420" r="330" fill="url(#kiln)"/>
-            <ellipse class="act1__wheel" cx="600" cy="590" rx="210" ry="28" pathLength="1"/>
-            <path class="act1__pot draw" pathLength="1" d="M 540 232 C 548 250, 562 262, 560 285 C 556 320, 462 350, 468 430 C 474 510, 520 552, 540 562 L 660 562 C 680 552, 726 510, 732 430 C 738 350, 644 320, 640 285 C 638 262, 652 250, 660 232"/>
-            <ellipse class="act1__rim draw" pathLength="1" cx="600" cy="232" rx="60" ry="10"/>
-            <path class="act1__spin draw" pathLength="1" d="M 482 400 C 540 424, 660 424, 718 400"/>
-            <path class="act1__spin draw" pathLength="1" d="M 476 450 C 540 476, 660 476, 724 450"/>
-            <path class="act1__spin draw" pathLength="1" d="M 494 500 C 550 522, 650 522, 706 500"/>
-            <path class="act1__peel draw" pathLength="1" d="M 660 232 C 700 200, 720 150, 800 130 C 900 104, 980 120, 1060 70 C 1110 40, 1160 20, 1220 -20"/>
-          </g>
-          <!-- Act 2: the network (nodes injected by script.js) -->
-          <g class="act act--2">
-            <path class="act2__enter draw" pathLength="1" d="M -20 820 C 120 700, 160 640, 250 600"/>
-            <g class="act2__links"></g>
-            <g class="act2__nodes"></g>
-          </g>
-          <!-- Act 3: the launch -->
-          <g class="act act--3">
-            <path class="act3__streak draw" pathLength="1" d="M -40 520 C 200 500, 420 540, 600 470 C 760 410, 900 450, 1240 430"/>
-            <g class="act3__rain"></g>
-            <g class="act3__window">
-              <rect x="440" y="300" width="320" height="220" rx="4"/>
-              <path d="M 600 300 L 600 520 M 440 410 L 760 410"/>
-              <circle cx="520" cy="360" r="5"/><circle cx="560" cy="372" r="4"/><circle cx="660" cy="356" r="5"/><circle cx="700" cy="468" r="4"/><circle cx="500" cy="470" r="4"/><circle cx="640" cy="462" r="5"/>
-            </g>
-          </g>
-        </svg>
-
         <p class="hero__kicker mono">Khushi Mehta · Marketing Strategist · London</p>
-        <p class="hero__prompt mono" aria-hidden="true">Scroll to play
-          <svg viewBox="0 0 24 40"><path d="M 12 2 C 10 14, 14 24, 12 36 M 5 29 L 12 37 L 19 29"/></svg>
-        </p>
-        <ol class="hero__captions mono" aria-hidden="true">
-          <li><b>01 / Belagavi, India</b> Where I learned business is just showing up and listening.</li>
-          <li><b>02 / Bangalore</b> 300 creators. Zero playbook.</li>
-          <li><b>03 / Coventry</b> 50 influencers at a launch. All of them came for free.</li>
-        </ol>
 
         <div class="hero__copy">
           <h1 class="hero__title" data-split="chars">From nothing<br> to <span class="hero__em"><em>noticed.</em><svg class="hero__underline" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M 4 14 C 60 6, 120 18, 180 11 C 220 7, 262 9, 296 12"/></svg></span></h1>
@@ -134,18 +86,15 @@
 
     <!-- ===== 02 STATS ===== -->
     <section class="stats" id="stats" data-theme="dark" aria-labelledby="stats-title">
-      <span class="thread-mark" data-thread="point" style="left:97%;top:3%"></span>
       <div class="wrap">
         <header class="section-head">
           <p class="kicker mono">By the numbers</p>
           <h2 id="stats-title" class="h2 reveal-lines">The short <em>version.</em></h2>
-          <p class="note note--light" style="--r:-4deg">yes, I counted them all.</p>
         </header>
 
         <div class="stats__grid">
-          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-8px"></span>
                     <div class="stat">
-            <p class="stat__num" data-thread="loop"><span data-count="300">0</span>+</p>
+            <p class="stat__num"><span data-count="300">0</span>+</p>
             <p class="stat__label mono">creators in a network I built from zero</p>
           </div>
           <div class="stat">
@@ -161,9 +110,7 @@
             <p class="stat__label mono">contacts in one B2B send · 46% opened</p>
           </div>
           <div class="stat">
-            <p class="stat__num">£<span data-count="4000">0</span>
-              <svg class="scribble scribble--circle" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M 160 16 C 120 2, 40 8, 16 38 C 0 64, 40 94, 104 92 C 170 90, 198 66, 188 40 C 180 18, 140 8, 92 12"/></svg>
-            </p>
+            <p class="stat__num">£<span data-count="4000">0</span></p>
             <p class="stat__label mono">recurring pipeline in my first 3 weeks at Pahli Hill</p>
           </div>
           <div class="stat">
@@ -173,13 +120,22 @@
         </div>
       </div>
 
-      <div class="ticker mono" aria-label="Supporting wins">
-        <div class="ticker__track">
-          <span>Founding hire → 10-person team ✳ +50% campaign throughput ✳ 65% margin held ✳ 11 channels, 6 brands ✳ £1,000/mo wasted spend cut ✳ +15% sales at the family business ✳ Telegraph response in week 3 ✳ Top 10% · Warwick MSc, Distinction ✳ 14+ "Best Manager" titles ✳ 4 languages ✳&nbsp;</span>
-          <span aria-hidden="true">Founding hire → 10-person team ✳ +50% campaign throughput ✳ 65% margin held ✳ 11 channels, 6 brands ✳ £1,000/mo wasted spend cut ✳ +15% sales at the family business ✳ Telegraph response in week 3 ✳ Top 10% · Warwick MSc, Distinction ✳ 14+ "Best Manager" titles ✳ 4 languages ✳&nbsp;</span>
+      <div class="wrap">
+        <div class="wins">
+          <p class="kicker mono">Also on the record</p>
+          <ul class="wins__list">
+            <li><b>Founding hire → 10-person team</b><span>WLDD creator vertical</span></li>
+            <li><b>65% margin held</b><span>negotiating with 1M-follower creators</span></li>
+            <li><b>+50% campaign throughput</b><span>after rebuilding workflows</span></li>
+            <li><b>11 channels, 6 brands</b><span>run at once at Elle's</span></li>
+            <li><b>£1,000/mo wasted spend cut</b><span>after a full digital audit</span></li>
+            <li><b>+15% sales</b><span>taking the family business online</span></li>
+            <li><b>Telegraph response</b><span>in week three of PR pitching</span></li>
+            <li><b>Distinction, top 10%</b><span>MSc Management, Warwick</span></li>
+            <li><b>14+ "Best Manager" titles</b><span>intercollegiate competitions</span></li>
+          </ul>
         </div>
       </div>
-      <span class="thread-mark" data-thread="point" style="left:3%;top:98%"></span>
     </section>
 
     <!-- ===== 03 MISSION ===== -->
@@ -188,16 +144,14 @@
         <p class="kicker mono">Why I do this</p>
         <h2 id="mission-title" class="mission__lead" data-split="scrub">
           Most marketing is made <span class="strike">for the brand.<svg class="scribble scribble--strike" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M 2 12 C 80 6, 160 14, 298 8"/></svg></span>
-          Mine is made for the person on the other end of the phone, the feed, or the <span class="mission__anchor" data-thread="under"><em>dinner table.</em></span>
+          Mine is made for the person on the other end of the phone, the feed, or the <span class="mission__anchor"><em>dinner table.</em></span>
         </h2>
         <div class="mission__body">
-          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-40px"></span>
                     <p class="body-lg reveal">I work with brands sitting at zero: new venues, new verticals, family businesses taking their first step online. I build the thing that wasn't there yesterday: the spreadsheets, the partnerships, the pitch decks, the cold calls. Then I make it run without me holding it together with tape.</p>
           <p class="body-lg reveal">Big ideas are great. <em class="accent">Ideas that fill tables are better.</em></p>
-          <p class="mission__side mono reveal"><b>Mission →</b> Make good brands impossible to ignore, and treat every relationship like it'll matter in five years. It usually does.</p>
+          <p class="mission__side reveal"><b>Mission →</b> Make good brands impossible to ignore, and treat every relationship like it'll matter in five years. It usually does.</p>
         </div>
       </div>
-      <span class="thread-mark" data-thread="point" style="left:97%;top:97%"></span>
     </section>
 
     <!-- ===== 04 PILLARS ===== -->
@@ -205,11 +159,10 @@
       <div class="wrap">
         <header class="section-head">
           <p class="kicker mono">What I'm good at</p>
-          <h2 id="pillars-title" class="h1 reveal-lines">Three things, done <span data-thread="under"><em>properly.</em></span></h2>
+          <h2 id="pillars-title" class="h1 reveal-lines">Three things, done <span><em>properly.</em></span></h2>
         </header>
 
         <div class="pillars__stack">
-          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-40px"></span>
                     <article class="pillar" style="--i:0;--rot:-1deg">
             <div class="pillar__top">
               <span class="pillar__num">01</span>
@@ -259,21 +212,18 @@
           </article>
         </div>
       </div>
-      <span class="thread-mark" data-thread="point" style="left:97%;top:99%"></span>
     </section>
 
     <!-- ===== 05 STORY ===== -->
     <section class="story" id="story" aria-labelledby="story-title">
       <div class="story__sticky">
         <div class="story__track">
-          <svg class="story__thread" aria-hidden="true"><path/></svg>
 
           <article class="story__intro">
             <p class="kicker mono">The story so far</p>
             <h2 id="story-title" class="h1">It started with <em>clay.</em></h2>
             <figure class="story__portrait">
               <img src="assets/img/khushi.jpg" srcset="assets/img/khushi-sm.jpg 480w, assets/img/khushi.jpg 960w" sizes="(max-width: 768px) 70vw, 26vw" width="960" height="1200" alt="Khushi Mehta smiling, wearing a cream ribbed cardigan" loading="lazy" decoding="async">
-              <svg class="scribble scribble--oval" viewBox="0 0 200 250" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M 120 8 C 50 4, 6 60, 8 130 C 10 200, 60 246, 112 242 C 170 238, 196 180, 192 112 C 188 50, 150 10, 92 14"/></svg>
             </figure>
             <p class="story__lede">I grew up speaking four languages and thinking across three cultures. It's probably why I became a marketer. The same message can mean everything to one person and nothing to the next. <em class="accent">That gap is where I work.</em></p>
           </article>
@@ -342,15 +292,13 @@
 
     <!-- ===== 06 SERVICES ===== -->
     <section class="services" id="services" aria-labelledby="services-title">
-      <span class="thread-mark" data-thread="point" style="left:2.5%;top:3%"></span>
       <div class="wrap">
         <header class="section-head">
           <p class="kicker mono">Hire me for</p>
-          <h2 id="services-title" class="h2 reveal-lines">The call you make when there's no team, no plan, and a launch in <span data-thread="under"><em>six weeks.</em></span></h2>
+          <h2 id="services-title" class="h2 reveal-lines">The call you make when there's no team, no plan, and a launch in <span><em>six weeks.</em></span></h2>
         </header>
 
         <ul class="services__list">
-          <li class="thread-mark" role="presentation" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-40px"></li>
                     <li class="service">
             <button class="service__head" aria-expanded="false">
               <span class="service__num mono">01</span>
@@ -407,7 +355,6 @@
           <a class="btn btn--ink magnetic" href="mailto:mehtakhushi73@gmail.com?subject=Got%20a%20launch"><span>Got a launch? Call me</span><i aria-hidden="true">→</i></a>
         </aside>
       </div>
-      <span class="thread-mark" data-thread="point" style="left:97%;top:99%"></span>
     </section>
 
     <!-- ===== 07 WORK ===== -->
@@ -416,19 +363,17 @@
         <header class="section-head section-head--split">
           <div>
             <p class="kicker mono">Selected work</p>
-            <h2 id="work-title" class="h1 reveal-lines"><span data-thread="under"><em>Receipts.</em></span></h2>
+            <h2 id="work-title" class="h1 reveal-lines"><span><em>Receipts.</em></span></h2>
           </div>
           <p class="body-lg work__intro reveal">Rooms I walked into with nothing. Here's what we built, with the numbers to prove it.</p>
         </header>
 
         <div class="work__grid">
-          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(var(--side) * -.6);top:-40px"></span>
-          <a class="work-card work-card--lg" href="#case-elles" data-case="elles" data-cursor="Open">
+          <a class="work-card work-card--lg" href="#case-elles" data-case="elles">
             <div class="work-card__media work-card__media--photo">
               <img src="assets/img/work/elles/full-house.jpg" alt="A full house at Elle's Coventry with the brand on the big screen" loading="lazy" decoding="async">
               <span class="work-card__metric">19→47%</span>
               <span class="work-card__metric-label mono">newsletter open rate</span>
-              <svg class="scribble scribble--arrow" viewBox="0 0 120 80" aria-hidden="true"><path pathLength="1" d="M 6 70 C 30 30, 70 14, 108 18 M 92 6 L 110 18 L 94 32"/></svg>
             </div>
             <div class="work-card__body">
               <p class="mono work-card__client">Elle's Coventry · Two Friargate</p>
@@ -438,7 +383,7 @@
             </div>
           </a>
 
-          <a class="work-card work-card--md" href="#case-almanack" data-case="almanack" data-cursor="Open">
+          <a class="work-card work-card--md" href="#case-almanack" data-case="almanack">
             <div class="work-card__media work-card__media--photo">
               <img src="assets/img/work/almanack/bar.jpg" alt="The Almanack bar in Kenilworth after the relaunch" loading="lazy" decoding="async">
               <span class="work-card__metric">200+</span>
@@ -452,7 +397,7 @@
             </div>
           </a>
 
-          <a class="work-card work-card--sm" href="#case-wldd" data-case="wldd" data-cursor="Open">
+          <a class="work-card work-card--sm" href="#case-wldd" data-case="wldd">
             <div class="work-card__media tone-sand">
               <span class="work-card__metric">300+</span>
               <span class="work-card__metric-label mono">creators · 15+ campaigns</span>
@@ -468,13 +413,9 @@
         </div>
       </div>
 
-      <div class="marquee" aria-label="Brands I've worked with">
-        <div class="marquee__track">
-          <span>Upstox · Flipkart · Zepto · Max Fashion · Damensch · Mamaearth · Minimalist · Vantara · Whole Foods · Revlon · Protexin ·&nbsp;</span>
-          <span aria-hidden="true">Upstox · Flipkart · Zepto · Max Fashion · Damensch · Mamaearth · Minimalist · Vantara · Whole Foods · Revlon · Protexin ·&nbsp;</span>
-        </div>
+      <div class="wrap">
+        <p class="brands"><span class="kicker mono">Brands I've worked on</span>Upstox · Flipkart · Zepto · Max Fashion · Damensch · Mamaearth · Minimalist · Vantara · Whole Foods · Revlon · Protexin</p>
       </div>
-      <span class="thread-mark" data-thread="point" style="left:3%;top:99%"></span>
     </section>
 
     <!-- ===== 08 CTA ===== -->
@@ -483,10 +424,10 @@
         <p class="kicker mono">Got a launch?</p>
         <h2 id="cta-title" class="cta__title" data-split="chars">Let's make it <em>impossible to ignore.</em></h2>
         <div class="cta__email-row">
-          <a class="cta__email" href="mailto:mehtakhushi73@gmail.com" data-cursor="Email" data-thread="under" data-thread-end>mehtakhushi73@gmail.com</a>
+          <a class="cta__email" href="mailto:mehtakhushi73@gmail.com">mehtakhushi73@gmail.com</a>
           <button class="cta__copy mono" type="button" data-copy="mehtakhushi73@gmail.com">Copy</button>
         </div>
-        <p class="note cta__note" style="--r:-4deg">↖ I reply faster than my AI agent.</p>
+        <p class="note cta__note" style="--r:-4deg">I reply faster than my AI agent.</p>
         <div class="cta__actions">
           <a class="btn btn--primary magnetic" href="mailto:mehtakhushi73@gmail.com"><span>Let's build something</span><i aria-hidden="true">→</i></a>
           <a class="u-link" href="https://www.linkedin.com/in/khushi-mehta-b82b641b0/" target="_blank" rel="noopener">Or stalk me on LinkedIn ↗</a>
