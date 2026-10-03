@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Khushi Mehta · Marketing Strategist, London</title>
+  <meta name="description" content="Khushi Mehta is a London-based marketing strategist who takes brands from nothing to noticed: creator partnerships, 0→1 launches, PR and business development.">
+  <meta name="theme-color" content="#F6EFE3">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Khushi Mehta · From nothing to noticed">
+  <meta property="og:description" content="I find the right people, get them talking, and turn the buzz into actual sales.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:opsz,wght@9..40,400..600&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+
+  <script>document.documentElement.classList.add('js');</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Khushi Mehta",
+    "jobTitle": "Marketing Strategist",
+    "email": "mailto:mehtakhushi73@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "London", "addressCountry": "GB" },
+    "sameAs": ["https://www.linkedin.com/in/khushi-mehta-b82b641b0/"],
+    "knowsLanguage": ["English", "Hindi", "Kannada", "Marathi"],
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Warwick Business School" }
+  }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="assets/data/cases.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#mission">Skip to content</a>
+
+  <!-- ===== Preloader ===== -->
+  <div class="preloader" aria-hidden="true">
+    <svg class="preloader__pot" viewBox="0 0 120 120">
+      <path pathLength="1" d="M 42 22 C 46 30, 50 34, 49 42 C 47 54, 22 62, 24 80 C 26 96, 40 104, 46 106 L 74 106 C 80 104, 94 96, 96 80 C 98 62, 73 54, 71 42 C 70 34, 74 30, 78 22"/>
+      <ellipse pathLength="1" cx="60" cy="22" rx="18" ry="4"/>
+    </svg>
+    <div class="preloader__count mono"><span data-preload-count>000</span></div>
+    <div class="preloader__label mono">Firing the kiln…</div>
+  </div>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"><span class="cursor__label"></span></span></div>
+
+  <!-- ===== Nav ===== -->
+  <header class="nav">
+    <a class="nav__name" href="#top" data-cursor="Top">Khushi <em>Mehta</em></a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#work" class="u-link">Work</a>
+      <a href="#story" class="u-link">Story</a>
+      <a href="#contact" class="u-link">Contact</a>
+    </nav>
+    <a class="nav__pill magnetic" href="mailto:mehtakhushi73@gmail.com">Let's talk</a>
+  </header>
+
+  <main class="page">
+    <svg class="thread" aria-hidden="true"><path class="thread__path"/></svg>
+
+    <!-- ===== 01 HERO / FILM ===== -->
+    <section class="hero" id="top" aria-label="Introduction">
+      <div class="hero__stage">
+        <canvas class="hero__canvas" data-frame-count="0" data-clips="assets/video/scene-1.mp4,assets/video/scene-2.mp4,assets/video/scene-3.mp4" aria-hidden="true"></canvas>
+
+        <svg class="hero__film" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <radialGradient id="kiln" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#D9541E" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#D9541E" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- Act 1: the workshop -->
+          <g class="act act--1">
+            <circle class="act1__glow" cx="600" cy="420" r="330" fill="url(#kiln)"/>
+            <ellipse class="act1__wheel" cx="600" cy="590" rx="210" ry="28" pathLength="1"/>
+            <path class="act1__pot draw" pathLength="1" d="M 540 232 C 548 250, 562 262, 560 285 C 556 320, 462 350, 468 430 C 474 510, 520 552, 540 562 L 660 562 C 680 552, 726 510, 732 430 C 738 350, 644 320, 640 285 C 638 262, 652 250, 660 232"/>
+            <ellipse class="act1__rim draw" pathLength="1" cx="600" cy="232" rx="60" ry="10"/>
+            <path class="act1__spin draw" pathLength="1" d="M 482 400 C 540 424, 660 424, 718 400"/>
+            <path class="act1__spin draw" pathLength="1" d="M 476 450 C 540 476, 660 476, 724 450"/>
+            <path class="act1__spin draw" pathLength="1" d="M 494 500 C 550 522, 650 522, 706 500"/>
+            <path class="act1__peel draw" pathLength="1" d="M 660 232 C 700 200, 720 150, 800 130 C 900 104, 980 120, 1060 70 C 1110 40, 1160 20, 1220 -20"/>
+          </g>
+          <!-- Act 2: the network (nodes injected by script.js) -->
+          <g class="act act--2">
+            <path class="act2__enter draw" pathLength="1" d="M -20 820 C 120 700, 160 640, 250 600"/>
+            <g class="act2__links"></g>
+            <g class="act2__nodes"></g>
+          </g>
+          <!-- Act 3: the launch -->
+          <g class="act act--3">
+            <path class="act3__streak draw" pathLength="1" d="M -40 520 C 200 500, 420 540, 600 470 C 760 410, 900 450, 1240 430"/>
+            <g class="act3__rain"></g>
+            <g class="act3__window">
+              <rect x="440" y="300" width="320" height="220" rx="4"/>
+              <path d="M 600 300 L 600 520 M 440 410 L 760 410"/>
+              <circle cx="520" cy="360" r="5"/><circle cx="560" cy="372" r="4"/><circle cx="660" cy="356" r="5"/><circle cx="700" cy="468" r="4"/><circle cx="500" cy="470" r="4"/><circle cx="640" cy="462" r="5"/>
+            </g>
+          </g>
+        </svg>
+
+        <p class="hero__kicker mono">Khushi Mehta · Marketing Strategist · London</p>
+        <p class="hero__prompt mono" aria-hidden="true">Scroll to play
+          <svg viewBox="0 0 24 40"><path d="M 12 2 C 10 14, 14 24, 12 36 M 5 29 L 12 37 L 19 29"/></svg>
+        </p>
+        <ol class="hero__captions mono" aria-hidden="true">
+          <li><b>01 / Belagavi, India</b> Where I learned business is just showing up and listening.</li>
+          <li><b>02 / Bangalore</b> 300 creators. Zero playbook.</li>
+          <li><b>03 / Coventry</b> 50 influencers at a launch. All of them came for free.</li>
+        </ol>
+
+        <div class="hero__copy">
+          <h1 class="hero__title" data-split="chars">From nothing<br> to <span class="hero__em"><em>noticed.</em><svg class="hero__underline" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M 4 14 C 60 6, 120 18, 180 11 C 220 7, 262 9, 296 12"/></svg></span></h1>
+          <p class="hero__sub">I find the right people, get them talking,<br class="br-desk"> and turn the buzz into actual sales.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary magnetic" href="mailto:mehtakhushi73@gmail.com"><span>Let's build something</span><i aria-hidden="true">→</i></a>
+            <a class="u-link hero__li" href="https://www.linkedin.com/in/khushi-mehta-b82b641b0/" target="_blank" rel="noopener">Or stalk me on LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 02 STATS ===== -->
+    <section class="stats" id="stats" data-theme="dark" aria-labelledby="stats-title">
+      <span class="thread-mark" data-thread="point" style="left:97%;top:3%"></span>
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker mono">By the numbers</p>
+          <h2 id="stats-title" class="h2 reveal-lines">The short <em>version.</em></h2>
+          <p class="note note--light" style="--r:-4deg">yes, I counted them all.</p>
+        </header>
+
+        <div class="stats__grid">
+          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-8px"></span>
+                    <div class="stat">
+            <p class="stat__num" data-thread="loop"><span data-count="300">0</span>+</p>
+            <p class="stat__label mono">creators in a network I built from zero</p>
+          </div>
+          <div class="stat">
+            <p class="stat__num"><span data-count="95">0</span>%</p>
+            <p class="stat__label mono">of them kept coming back</p>
+          </div>
+          <div class="stat">
+            <p class="stat__num"><span class="stat__from">19→</span><span data-count="47" data-from="19">19</span>%</p>
+            <p class="stat__label mono">email open rates, same list, better words</p>
+          </div>
+          <div class="stat">
+            <p class="stat__num"><span data-count="67925">0</span></p>
+            <p class="stat__label mono">contacts in one B2B send · 46% opened</p>
+          </div>
+          <div class="stat">
+            <p class="stat__num">£<span data-count="4000">0</span>
+              <svg class="scribble scribble--circle" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M 160 16 C 120 2, 40 8, 16 38 C 0 64, 40 94, 104 92 C 170 90, 198 66, 188 40 C 180 18, 140 8, 92 12"/></svg>
+            </p>
+            <p class="stat__label mono">recurring pipeline in my first 3 weeks at Pahli Hill</p>
+          </div>
+          <div class="stat">
+            <p class="stat__num"><span data-count="150">0</span>+</p>
+            <p class="stat__label mono">personalised emails a day, sent by an AI agent I built</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticker mono" aria-label="Supporting wins">
+        <div class="ticker__track">
+          <span>Founding hire → 10-person team ✳ +50% campaign throughput ✳ 65% margin held ✳ 11 channels, 6 brands ✳ £1,000/mo wasted spend cut ✳ +15% sales at the family business ✳ Telegraph response in week 3 ✳ Top 10% · Warwick MSc, Distinction ✳ 14+ "Best Manager" titles ✳ 4 languages ✳&nbsp;</span>
+          <span aria-hidden="true">Founding hire → 10-person team ✳ +50% campaign throughput ✳ 65% margin held ✳ 11 channels, 6 brands ✳ £1,000/mo wasted spend cut ✳ +15% sales at the family business ✳ Telegraph response in week 3 ✳ Top 10% · Warwick MSc, Distinction ✳ 14+ "Best Manager" titles ✳ 4 languages ✳&nbsp;</span>
+        </div>
+      </div>
+      <span class="thread-mark" data-thread="point" style="left:3%;top:98%"></span>
+    </section>
+
+    <!-- ===== 03 MISSION ===== -->
+    <section class="mission" id="mission" aria-labelledby="mission-title">
+      <div class="wrap">
+        <p class="kicker mono">Why I do this</p>
+        <h2 id="mission-title" class="mission__lead" data-split="scrub">
+          Most marketing is made <span class="strike">for the brand.<svg class="scribble scribble--strike" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M 2 12 C 80 6, 160 14, 298 8"/></svg></span>
+          Mine is made for the person on the other end of the phone, the feed, or the <span class="mission__anchor" data-thread="under"><em>dinner table.</em></span>
+        </h2>
+        <div class="mission__body">
+          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-40px"></span>
+                    <p class="body-lg reveal">I work with brands sitting at zero: new venues, new verticals, family businesses taking their first step online. I build the thing that wasn't there yesterday: the spreadsheets, the partnerships, the pitch decks, the cold calls. Then I make it run without me holding it together with tape.</p>
+          <p class="body-lg reveal">Big ideas are great. <em class="accent">Ideas that fill tables are better.</em></p>
+          <p class="mission__side mono reveal"><b>Mission →</b> Make good brands impossible to ignore, and treat every relationship like it'll matter in five years. It usually does.</p>
+        </div>
+      </div>
+      <span class="thread-mark" data-thread="point" style="left:97%;top:97%"></span>
+    </section>
+
+    <!-- ===== 04 PILLARS ===== -->
+    <section class="pillars" id="pillars" aria-labelledby="pillars-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker mono">What I'm good at</p>
+          <h2 id="pillars-title" class="h1 reveal-lines">Three things, done <span data-thread="under"><em>properly.</em></span></h2>
+        </header>
+
+        <div class="pillars__stack">
+          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-40px"></span>
+                    <article class="pillar" style="--i:0;--rot:-1deg">
+            <div class="pillar__top">
+              <span class="pillar__num">01</span>
+              <span class="tag mono">People</span>
+            </div>
+            <h3 class="pillar__title">Creators &amp; <em>influencers.</em></h3>
+            <p class="pillar__sub">Finding them, vetting them, negotiating with them, and keeping them.</p>
+            <ul class="pillar__list">
+              <li><b>300+</b> creator network built from scratch · <b>95%</b> retention</li>
+              <li>1M-follower creators negotiated to <b>£250–300</b> a post, <b>65%</b> margin held</li>
+              <li>~150 creators across Flipkart, Zepto, Max Fashion &amp; Damensch</li>
+              <li><b>50+</b> influencers at a launch, for free</li>
+            </ul>
+            <p class="note" style="--r:-3deg">no bridges were burned.</p>
+          </article>
+
+          <article class="pillar" style="--i:1;--rot:.6deg">
+            <div class="pillar__top">
+              <span class="pillar__num">02</span>
+              <span class="tag mono">Launches</span>
+            </div>
+            <h3 class="pillar__title">0→1 brands &amp; <em>launches.</em></h3>
+            <p class="pillar__sub">No team, no infrastructure, no problem.</p>
+            <ul class="pillar__list">
+              <li>Built a marketing function across <b>11 channels</b> and <b>6 brands</b></li>
+              <li>Email opens <b>19% → 47%</b></li>
+              <li><b>67,925</b>-contact B2B campaign · <b>46%</b> unique opens</li>
+              <li><b>+15%</b> sales taking the family business online</li>
+            </ul>
+            <p class="note" style="--r:2deg">opening night. full room.</p>
+          </article>
+
+          <article class="pillar" style="--i:2;--rot:-.5deg">
+            <div class="pillar__top">
+              <span class="pillar__num">03</span>
+              <span class="tag mono">Pipeline</span>
+            </div>
+            <h3 class="pillar__title">Partnerships, PR &amp; <em>BD.</em></h3>
+            <p class="pillar__sub">Picking up the phone and turning relationships into revenue.</p>
+            <ul class="pillar__list">
+              <li><b>30</b> qualified leads, <b>£4K</b> recurring pipeline &amp; <b>£2K</b> booked, in 3 weeks</li>
+              <li>Partnership channels: <b>1 → 6</b></li>
+              <li><b>£1,000/month</b> of dead ad spend, cut</li>
+              <li>Telegraph journalist response in <b>week 3</b> of pitching</li>
+            </ul>
+            <p class="note" style="--r:-2deg">yes, 50 cold calls a day. yes, really.</p>
+          </article>
+        </div>
+      </div>
+      <span class="thread-mark" data-thread="point" style="left:97%;top:99%"></span>
+    </section>
+
+    <!-- ===== 05 STORY ===== -->
+    <section class="story" id="story" aria-labelledby="story-title">
+      <div class="story__sticky">
+        <div class="story__track">
+          <svg class="story__thread" aria-hidden="true"><path/></svg>
+
+          <article class="story__intro">
+            <p class="kicker mono">The story so far</p>
+            <h2 id="story-title" class="h1">It started with <em>clay.</em></h2>
+            <figure class="story__portrait">
+              <img src="assets/img/khushi.jpg" srcset="assets/img/khushi-sm.jpg 480w, assets/img/khushi.jpg 960w" sizes="(max-width: 768px) 70vw, 26vw" width="960" height="1200" alt="Khushi Mehta smiling, wearing a cream ribbed cardigan" loading="lazy" decoding="async">
+              <svg class="scribble scribble--oval" viewBox="0 0 200 250" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M 120 8 C 50 4, 6 60, 8 130 C 10 200, 60 246, 112 242 C 170 238, 196 180, 192 112 C 188 50, 150 10, 92 14"/></svg>
+            </figure>
+            <p class="story__lede">I grew up speaking four languages and thinking across three cultures. It's probably why I became a marketer. The same message can mean everything to one person and nothing to the next. <em class="accent">That gap is where I work.</em></p>
+          </article>
+
+          <article class="chapter">
+            <span class="chapter__num" aria-hidden="true">01</span>
+            <p class="chapter__tag mono">Jainam Ceramics · Belagavi</p>
+            <h3 class="chapter__title">It started with <em>clay.</em></h3>
+            <p>My family makes ceramics. I learned business the honest way: a real product, real customers, nobody to hide behind. I led our move online and sales grew <b>15%</b>.</p>
+            <p>Lesson one: marketing is mostly showing up, listening, and fixing what's broken.</p>
+          </article>
+
+          <article class="chapter">
+            <span class="chapter__num" aria-hidden="true">02</span>
+            <p class="chapter__tag mono">WLDD · Founding hire · Bangalore</p>
+            <h3 class="chapter__title">Then, <em>Bangalore.</em></h3>
+            <p>A brand-new LinkedIn creator vertical. No team, no playbook. I built a <b>300-creator</b> network with <b>95%</b> retention, talked 1M-follower creators down to £250–300 a post without burning a bridge, held a <b>65%</b> margin, rebuilt workflows (<b>+50%</b> throughput) and grew it into a <b>10-person team</b>.</p>
+            <p>15+ campaigns for Upstox, Max Fashion, Vantara and Damensch, activations for Flipkart and Zepto, and launches for Mamaearth and Minimalist.</p>
+          </article>
+
+          <article class="chapter">
+            <span class="chapter__num" aria-hidden="true">03</span>
+            <p class="chapter__tag mono">Warwick Business School</p>
+            <h3 class="chapter__title">Then, a one-way <em>ticket.</em></h3>
+            <p>MSc Management. <b>Distinction, top 10%</b>, merit scholarship. I supported myself in a country where I knew nobody, and learned British culture the fastest way possible: pouring pints.</p>
+            <p class="note" style="--r:-3deg">best crash course there is.</p>
+          </article>
+
+          <article class="chapter">
+            <span class="chapter__num" aria-hidden="true">04</span>
+            <p class="chapter__tag mono">Elle's Coventry &amp; The Almanack</p>
+            <h3 class="chapter__title">Then, a marketing department out of <em>thin air.</em></h3>
+            <p>A multi-brand hospitality launch with zero marketing infrastructure. I built it across <b>11 channels</b> and <b>6 brands</b>. Email opens <b>19% → 47%</b>. A 67,925-contact B2B campaign at 46% opens. 100+ influencers pitched, <b>50+</b> at the launch, for free.</p>
+          </article>
+
+          <article class="chapter">
+            <span class="chapter__num" aria-hidden="true">05</span>
+            <p class="chapter__tag mono">Speed Communications · PR</p>
+            <h3 class="chapter__title">Then, the <em>chase.</em></h3>
+            <p>Revlon and Protexin pitches. A Telegraph journalist replied in <b>week three</b>. That's when I realised I love the chase.</p>
+          </article>
+
+          <article class="chapter">
+            <span class="chapter__num" aria-hidden="true">06</span>
+            <p class="chapter__tag mono">Pahli Hill Bandra Bhai · Fitzrovia</p>
+            <h3 class="chapter__title">Now: London, and a lot of <em>phone calls.</em></h3>
+            <p>Business development for a Michelin Bib Gourmand restaurant. <b>50+</b> cold calls a day to central London's 4- and 5-star hotels. Three weeks: <b>30</b> qualified leads, <b>£4K</b> recurring pipeline, <b>£2K</b> booked.</p>
+            <p>I cut <b>£1K/month</b> of dead ad spend and built an AI agent that sends 150+ personalised emails a day. Partnership channels: <b>1 → 6</b>.</p>
+          </article>
+
+          <article class="story__outro">
+            <p class="kicker mono">Off the clock</p>
+            <ul class="chips">
+              <li class="chip">English · हिन्दी · ಕನ್ನಡ · मराठी</li>
+              <li class="chip">14+ "Best Manager" titles</li>
+              <li class="chip">Keyboard &amp; ukulele</li>
+              <li class="chip">Poetry &amp; a blog</li>
+              <li class="chip">Lectures to rooms of 50–100</li>
+              <li class="chip">Works hard, parties harder</li>
+            </ul>
+            <p class="story__closing">I'll figure out the thing I haven't done before, and I'd rather tell you the truth than tell you what you want to hear.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 06 SERVICES ===== -->
+    <section class="services" id="services" aria-labelledby="services-title">
+      <span class="thread-mark" data-thread="point" style="left:2.5%;top:3%"></span>
+      <div class="wrap">
+        <header class="section-head">
+          <p class="kicker mono">Hire me for</p>
+          <h2 id="services-title" class="h2 reveal-lines">The call you make when there's no team, no plan, and a launch in <span data-thread="under"><em>six weeks.</em></span></h2>
+        </header>
+
+        <ul class="services__list">
+          <li class="thread-mark" role="presentation" data-thread="point" data-dir="h" style="left:calc(100% + var(--side) * .5);top:-40px"></li>
+                    <li class="service">
+            <button class="service__head" aria-expanded="false">
+              <span class="service__num mono">01</span>
+              <span class="service__title">Creator programmes</span>
+              <span class="service__line">From zero to a roster that keeps showing up.</span>
+              <span class="service__icon" aria-hidden="true">→</span>
+            </button>
+            <div class="service__body"><div><p class="mono">Sourcing · Vetting · Rate negotiation · Briefs · Payments · Retention</p></div></div>
+          </li>
+          <li class="service">
+            <button class="service__head" aria-expanded="false">
+              <span class="service__num mono">02</span>
+              <span class="service__title">Launch marketing</span>
+              <span class="service__line">Opening night, full room.</span>
+              <span class="service__icon" aria-hidden="true">→</span>
+            </button>
+            <div class="service__body"><div><p class="mono">Channel build · Email &amp; CRM · Influencer events · Social · PR angles</p></div></div>
+          </li>
+          <li class="service">
+            <button class="service__head" aria-expanded="false">
+              <span class="service__num mono">03</span>
+              <span class="service__title">Partnerships &amp; BD</span>
+              <span class="service__line">The phone calls nobody else wants to make.</span>
+              <span class="service__icon" aria-hidden="true">→</span>
+            </button>
+            <div class="service__body"><div><p class="mono">Hotels &amp; concierges · Corporate · Events &amp; weddings · Retail · Luxury travel</p></div></div>
+          </li>
+          <li class="service">
+            <button class="service__head" aria-expanded="false">
+              <span class="service__num mono">04</span>
+              <span class="service__title">Outreach systems</span>
+              <span class="service__line">Personal, at scale.</span>
+              <span class="service__icon" aria-hidden="true">→</span>
+            </button>
+            <div class="service__body"><div><p class="mono">AI-assisted outreach agents · Sequencing · Audits of wasted spend</p></div></div>
+          </li>
+        </ul>
+
+        <aside class="agent" aria-labelledby="agent-title">
+          <div class="agent__head">
+            <p class="kicker mono">Side project that went to work</p>
+            <h3 id="agent-title" class="agent__title">The AI outreach <em>agent.</em></h3>
+            <p class="note" style="--r:-3deg">built it myself. it doesn't sleep.</p>
+          </div>
+          <ol class="agent__flow mono">
+            <li>Lead list</li>
+            <li>Research</li>
+            <li>Personalised draft</li>
+            <li>Send <b>150+/day</b></li>
+            <li>Reply</li>
+            <li class="is-end">Booked table</li>
+          </ol>
+          <p class="agent__foot"><b>+10%</b> response rate on cold outreach to London's 4- and 5-star hotels.</p>
+          <a class="btn btn--ink magnetic" href="mailto:mehtakhushi73@gmail.com?subject=Got%20a%20launch"><span>Got a launch? Call me</span><i aria-hidden="true">→</i></a>
+        </aside>
+      </div>
+      <span class="thread-mark" data-thread="point" style="left:97%;top:99%"></span>
+    </section>
+
+    <!-- ===== 07 WORK ===== -->
+    <section class="work" id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <header class="section-head section-head--split">
+          <div>
+            <p class="kicker mono">Selected work</p>
+            <h2 id="work-title" class="h1 reveal-lines"><span data-thread="under"><em>Receipts.</em></span></h2>
+          </div>
+          <p class="body-lg work__intro reveal">Rooms I walked into with nothing. Here's what we built, with the numbers to prove it.</p>
+        </header>
+
+        <div class="work__grid">
+          <span class="thread-mark" data-thread="point" data-dir="h" style="left:calc(var(--side) * -.6);top:-40px"></span>
+          <a class="work-card work-card--lg" href="#case-elles" data-case="elles" data-cursor="Open">
+            <div class="work-card__media work-card__media--photo">
+              <img src="assets/img/work/elles/full-house.jpg" alt="A full house at Elle's Coventry with the brand on the big screen" loading="lazy" decoding="async">
+              <span class="work-card__metric">19→47%</span>
+              <span class="work-card__metric-label mono">newsletter open rate</span>
+              <svg class="scribble scribble--arrow" viewBox="0 0 120 80" aria-hidden="true"><path pathLength="1" d="M 6 70 C 30 30, 70 14, 108 18 M 92 6 L 110 18 L 94 32"/></svg>
+            </div>
+            <div class="work-card__body">
+              <p class="mono work-card__client">Elle's Coventry · Two Friargate</p>
+              <h3 class="work-card__title">A launch from <em>zero.</em></h3>
+              <p class="work-card__line">Six kitchens, two bars, one opening night. 30,436 unique opens on a single send · Instagram 700 → 5K · 4.5★ from 366 reviews.</p>
+              <span class="work-card__cta mono">View case ↗</span>
+            </div>
+          </a>
+
+          <a class="work-card work-card--md" href="#case-almanack" data-case="almanack" data-cursor="Open">
+            <div class="work-card__media work-card__media--photo">
+              <img src="assets/img/work/almanack/bar.jpg" alt="The Almanack bar in Kenilworth after the relaunch" loading="lazy" decoding="async">
+              <span class="work-card__metric">200+</span>
+              <span class="work-card__metric-label mono">guests on relaunch night</span>
+            </div>
+            <div class="work-card__body">
+              <p class="mono work-card__client">The Almanack · Kenilworth</p>
+              <h3 class="work-card__title">Bringing a local <em>back.</em></h3>
+              <p class="work-card__line">A gastropub relaunch: hand-drawn walls, tasting nights, a quiz that doubled to 30 covers, and Mum &amp; Baby sessions selling 35 tickets a week.</p>
+              <span class="work-card__cta mono">View case ↗</span>
+            </div>
+          </a>
+
+          <a class="work-card work-card--sm" href="#case-wldd" data-case="wldd" data-cursor="Open">
+            <div class="work-card__media tone-sand">
+              <span class="work-card__metric">300+</span>
+              <span class="work-card__metric-label mono">creators · 15+ campaigns</span>
+            </div>
+            <div class="work-card__body">
+              <p class="mono work-card__client">WLDD · Bangalore</p>
+              <h3 class="work-card__title">Building a creator <em>vertical.</em></h3>
+              <p class="work-card__line">Upstox, Max Fashion, Vantara, Damensch. Founding hire to a 10-person team.</p>
+              <span class="work-card__cta mono">View case ↗</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="marquee" aria-label="Brands I've worked with">
+        <div class="marquee__track">
+          <span>Upstox · Flipkart · Zepto · Max Fashion · Damensch · Mamaearth · Minimalist · Vantara · Whole Foods · Revlon · Protexin ·&nbsp;</span>
+          <span aria-hidden="true">Upstox · Flipkart · Zepto · Max Fashion · Damensch · Mamaearth · Minimalist · Vantara · Whole Foods · Revlon · Protexin ·&nbsp;</span>
+        </div>
+      </div>
+      <span class="thread-mark" data-thread="point" style="left:3%;top:99%"></span>
+    </section>
+
+    <!-- ===== 08 CTA ===== -->
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <div class="wrap">
+        <p class="kicker mono">Got a launch?</p>
+        <h2 id="cta-title" class="cta__title" data-split="chars">Let's make it <em>impossible to ignore.</em></h2>
+        <div class="cta__email-row">
+          <a class="cta__email" href="mailto:mehtakhushi73@gmail.com" data-cursor="Email" data-thread="under" data-thread-end>mehtakhushi73@gmail.com</a>
+          <button class="cta__copy mono" type="button" data-copy="mehtakhushi73@gmail.com">Copy</button>
+        </div>
+        <p class="note cta__note" style="--r:-4deg">↖ I reply faster than my AI agent.</p>
+        <div class="cta__actions">
+          <a class="btn btn--primary magnetic" href="mailto:mehtakhushi73@gmail.com"><span>Let's build something</span><i aria-hidden="true">→</i></a>
+          <a class="u-link" href="https://www.linkedin.com/in/khushi-mehta-b82b641b0/" target="_blank" rel="noopener">Or stalk me on LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== 09 FOOTER ===== -->
+  <footer class="footer" data-theme="dark">
+    <div class="wrap footer__grid">
+      <div>
+        <p class="footer__name">Khushi <em>Mehta</em></p>
+        <p class="mono footer__role">Marketing Strategist · London</p>
+      </div>
+      <p class="footer__hello" aria-live="off"><span data-hello>Hello</span><span class="footer__caret" aria-hidden="true">|</span></p>
+      <ul class="footer__links">
+        <li><a class="u-link" href="mailto:mehtakhushi73@gmail.com">Email</a></li>
+        <li><a class="u-link" href="https://www.linkedin.com/in/khushi-mehta-b82b641b0/" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+      </ul>
+    </div>
+    <div class="wrap footer__bottom mono">
+      <span>© <span data-year>2026</span> Khushi Mehta</span>
+      <span>Shaped by hand in London</span>
+      <span>LDN <time data-clock>--:--</time></span>
+      <a href="#top" class="u-link" data-top>Back to top ↑</a>
+      <svg class="footer__pot" viewBox="0 0 120 120" aria-hidden="true"><path d="M 42 22 C 46 30, 50 34, 49 42 C 47 54, 22 62, 24 80 C 26 96, 40 104, 46 106 L 74 106 C 80 104, 94 96, 96 80 C 98 62, 73 54, 71 42 C 70 34, 74 30, 78 22"/><ellipse cx="60" cy="22" rx="18" ry="4"/></svg>
+    </div>
+  </footer>
+
+  <!-- Mobile sticky CTA -->
+  <div class="mbar" aria-label="Quick contact">
+    <a href="mailto:mehtakhushi73@gmail.com" class="mbar__primary">Email me</a>
+    <a href="https://www.linkedin.com/in/khushi-mehta-b82b641b0/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
+
+  <!-- Case panel -->
+  <div class="case" role="dialog" aria-modal="true" aria-labelledby="case-title" hidden>
+    <div class="case__backdrop" data-case-close></div>
+    <div class="case__sheet" data-lenis-prevent tabindex="-1">
+      <button class="case__close mono" type="button" data-case-close aria-label="Close case study">Close ✕</button>
+      <div class="case__content"></div>
+    </div>
+  </div>
+
+  <div class="lightbox" hidden>
+    <button class="lightbox__close mono" type="button" aria-label="Close image">Close ✕</button>
+    <img alt="">
+  </div>
+
+  <div class="toast mono" role="status" aria-live="polite"></div>
+</body>
+</html>
