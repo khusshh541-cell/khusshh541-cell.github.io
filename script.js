@@ -132,8 +132,7 @@
   function setupHero() {
     splitText(heroTitle, true);
     heroTitle.classList.add('split-chars');
-    // "Hi" in the four languages I speak; the focus label rotates, London stays
-    typeCycle(qs('[data-hi]'), ['Hi', 'नमस्ते', 'ನಮಸ್ಕಾರ', 'नमस्कार'], { startAfter: 5000, hold: 2200, typeMs: 110 });
+    // the focus label rotates; London stays
     typeCycle(qs('[data-roles]'), ['All things marketing', 'Creators', 'Influencers', 'Brand', 'Launches', 'Partnerships'], { startAfter: 4200, hold: 1600, typeMs: 55, eraseMs: 30 });
     if (reduce) { gsap.set(heroUnderline, { strokeDashoffset: 0 }); return; }
     gsap.set(heroCopy, { autoAlpha: 0 });
