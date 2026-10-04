@@ -122,7 +122,7 @@
       .fromTo(qsa('.c', heroTitle), { yPercent: 115, rotate: 7 }, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.03 }, 0.1)
       .fromTo('.hero__lead', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.5)
       .fromTo(heroUnderline, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' }, 1.0)
-      .fromTo('.hero__ctas', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.8)
+      .fromTo('.hero__portrait', { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.4 }, 0.3)
       .from('.hero__prompt', { autoAlpha: 0, duration: 1 }, 1.2);
   }
 
