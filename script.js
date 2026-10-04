@@ -340,7 +340,7 @@
         autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.1,
         scrollTrigger: { trigger: '.work__grid', start: 'top 80%', once: true }
       });
-      gsap.fromTo('.cta__email-row, .cta__actions', { autoAlpha: 0 }, {
+      gsap.fromTo('.cta__open, .cta__card, .cta__meta', { autoAlpha: 0, y: 24 }, { y: 0,
         autoAlpha: 1, duration: 1.2, stagger: 0.15, delay: 0.4,
         scrollTrigger: { trigger: '.cta', start: 'top 60%', once: true }
       });

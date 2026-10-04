@@ -805,3 +805,27 @@
     .growth__bar { transition: none; }
   }
 }
+
+  /* ===== CTA: get in touch ===== */
+  .cta__inner { text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .kicker--center { justify-content: center; }
+  .kicker--center::after { content: ''; width: 26px; height: 1.5px; background: var(--orange); }
+  .cta .cta__title { max-width: 11em; font-size: clamp(3rem, 8.4vw, 8.6rem); }
+  .cta__open { margin-top: clamp(24px, 4vh, 40px); max-width: 34em; font-size: var(--fs-body-lg); color: var(--ink-60); line-height: 1.5; }
+  .cta__cards { margin-top: clamp(40px, 7vh, 64px); width: min(100%, 920px); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: left; }
+  .cta__card { display: flex; align-items: center; gap: 16px; padding: 22px 24px; border-radius: 14px; background: var(--ink); color: var(--cream); transition: transform .5s var(--ease), background-color .3s; }
+  a.cta__card:hover { transform: translateY(-4px); background: #2a231f; }
+  .cta__icon { flex: none; width: 48px; height: 48px; border-radius: 10px; display: grid; place-items: center; background: rgba(217,84,30,.18); color: #F6B08F; }
+  .cta__icon svg { width: 22px; height: 22px; fill: currentColor; }
+  .cta__icon svg[fill="none"] { fill: none; }
+  .cta__card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .cta__card-text .mono { color: #F6B08F; font-size: .7rem; }
+  .cta__card-text b { font-weight: 500; font-size: 1.05rem; overflow-wrap: anywhere; }
+  .cta__arrow { color: #F6B08F; font-size: 1.2rem; transition: transform .4s var(--ease); }
+  a.cta__card:hover .cta__arrow { transform: translate(3px, -3px); }
+  .cta__card .cta__copy { color: var(--cream); border-color: var(--cream-line); }
+  .cta__card .cta__copy:hover { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+  .cta__meta { margin-top: clamp(28px, 5vh, 44px); display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .cta__reply { font-family: var(--f-display); font-style: italic; color: var(--orange); font-size: 1.1rem; }
+  .cta__rtw { display: inline-block; padding: .65em 1.4em; border-radius: 99px; background: var(--teal); color: var(--cream); font-weight: 500; font-size: .95rem; }
+  @media (max-width: 768px) { .cta__cards { grid-template-columns: 1fr; } }
