@@ -472,7 +472,7 @@
       if (e.key.length !== 1) return;
       buf = (buf + e.key.toLowerCase()).slice(-4);
       if (buf === 'clay') {
-        pot.classList.remove('is-spin'); void pot.getBoundingClientRect(); pot.classList.add('is-spin');
+        if (pot) { pot.classList.remove('is-spin'); void pot.getBoundingClientRect(); pot.classList.add('is-spin'); }
         showToast('you found it. now email me.');
       }
     });
