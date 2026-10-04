@@ -841,15 +841,15 @@
 
   /* ===== Intro: words left, portrait right ===== */
   .hero { height: auto; min-height: 100vh; min-height: 100svh; }
-  .hero .hero__stage { position: relative; min-height: 100vh; min-height: 100svh; height: auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(32px, 5vw, 96px); padding: calc(var(--nav-h) + 40px) var(--side) 72px; }
+  .hero .hero__stage { position: relative; min-height: 100vh; min-height: 100svh; height: auto; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: center; gap: clamp(32px, 5vw, 96px); padding: calc(var(--nav-h) + 40px) var(--side) 72px; }
   .hero .hero__kicker { top: calc(var(--nav-h) + 8px); }
   .hero .hero__copy { padding: 0; }
   .hero .hero__title { font-size: clamp(3.4rem, 8.6vw, 9.4rem); }
-  .hero__portrait { margin: 0; justify-self: end; width: clamp(220px, 22vw, 340px); }
+  .hero__portrait { margin: 0; justify-self: center; width: min(100%, 440px); }
   .hero__portrait img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 999px 999px 8px 8px; filter: sepia(.08) saturate(1.04); }
   @media (max-width: 768px) {
     .hero .hero__stage { grid-template-columns: 1fr; gap: 32px; padding-top: calc(var(--nav-h) + 56px); }
-    .hero__portrait { order: -1; justify-self: start; width: 46%; }
+    .hero__portrait { order: -1; justify-self: start; width: 58%; }
     .hero .hero__title { font-size: 15vw; }
   }
   .stats { padding-bottom: var(--section-y); }
