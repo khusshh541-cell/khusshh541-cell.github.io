@@ -854,3 +854,7 @@
   }
   .stats { padding-bottom: var(--section-y); }
   .stats__grid { padding-bottom: 0; }
+
+  /* rotating hello + focus label */
+  .hero__hi { display: inline-block; min-width: 1.1em; }
+  .hero__caret { color: var(--orange); margin-left: 1px; animation: blink 1s steps(1) infinite; }

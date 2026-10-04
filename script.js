@@ -29,6 +29,24 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmtNum = (n) => Math.round(n).toLocaleString('en-GB');
 
+  /** Typewriter: erase the current word, type the next, hold, repeat. Grapheme-safe for Hindi/Kannada. */
+  const seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter('en', { granularity: 'grapheme' }) : null;
+  const graphemes = (s) => (seg ? [...seg.segment(s)].map((g) => g.segment) : [...s]);
+  function typeCycle(el, words, { startAfter = 2000, hold = 2000, typeMs = 90, eraseMs = 45 } = {}) {
+    if (!el) return;
+    let wi = 0;
+    const cycle = async () => {
+      if (reduce) { wi = (wi + 1) % words.length; el.textContent = words[wi]; setTimeout(cycle, hold + 400); return; }
+      const cur = graphemes(el.textContent || words[wi]);
+      for (let i = cur.length; i >= 0; i--) { el.textContent = cur.slice(0, i).join(''); await wait(eraseMs); }
+      wi = (wi + 1) % words.length;
+      const next = graphemes(words[wi]);
+      for (let i = 1; i <= next.length; i++) { el.textContent = next.slice(0, i).join(''); await wait(typeMs); }
+      setTimeout(cycle, hold);
+    };
+    setTimeout(cycle, startAfter);
+  }
+
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'expo.out', duration: 1 });
 
@@ -114,6 +132,9 @@
   function setupHero() {
     splitText(heroTitle, true);
     heroTitle.classList.add('split-chars');
+    // "Hi" in the four languages I speak; the focus label rotates, London stays
+    typeCycle(qs('[data-hi]'), ['Hi', 'नमस्ते', 'ನಮಸ್ಕಾರ', 'नमस्कार'], { startAfter: 5000, hold: 2200, typeMs: 110 });
+    typeCycle(qs('[data-roles]'), ['All things marketing', 'Creators', 'Influencers', 'Brand', 'Launches', 'Partnerships'], { startAfter: 4200, hold: 1600, typeMs: 55, eraseMs: 30 });
     if (reduce) { gsap.set(heroUnderline, { strokeDashoffset: 0 }); return; }
     gsap.set(heroCopy, { autoAlpha: 0 });
     heroStart = () => gsap.timeline()
@@ -449,21 +470,7 @@
     const tick = () => { clock.textContent = fmt.format(new Date()); };
     tick(); setInterval(tick, 15000);
 
-    const hello = qs('[data-hello]');
-    const words = ['Hello', 'नमस्ते', 'ನಮಸ್ಕಾರ', 'नमस्कार'];
-    const seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter('en', { granularity: 'grapheme' }) : null;
-    const graphemes = (s) => (seg ? [...seg.segment(s)].map((g) => g.segment) : [...s]);
-    let wi = 0;
-    const cycle = async () => {
-      if (reduce) { wi = (wi + 1) % words.length; hello.textContent = words[wi]; setTimeout(cycle, 2200); return; }
-      const cur = graphemes(words[wi]);
-      for (let i = cur.length; i >= 0; i--) { hello.textContent = cur.slice(0, i).join(''); await wait(60); }
-      wi = (wi + 1) % words.length;
-      const next = graphemes(words[wi]);
-      for (let i = 1; i <= next.length; i++) { hello.textContent = next.slice(0, i).join(''); await wait(110); }
-      setTimeout(cycle, 2000);
-    };
-    setTimeout(cycle, 2000);
+    typeCycle(qs('[data-hello]'), ['Hello', 'नमस्ते', 'ನಮಸ್ಕಾರ', 'नमस्कार'], { startAfter: 2000 });
 
     // Easter egg: type "clay"
     let buf = '';
