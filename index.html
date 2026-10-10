@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..600&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&display=swap">
-  <link rel="stylesheet" href="style.css?v=202610041100">
+  <link rel="stylesheet" href="style.css?v=202610101519">
 
   <script>document.documentElement.classList.add('js');</script>
   <script type="application/ld+json">
@@ -36,8 +36,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script src="assets/data/cases.js?v=202610041100" defer></script>
-  <script src="script.js?v=202610041100" defer></script>
+  <script src="assets/data/cases.js?v=202610101519" defer></script>
+  <script src="script.js?v=202610101519" defer></script>
 </head>
 <body>
   <a class="skip" href="#stats">Skip to content</a>
@@ -282,59 +282,105 @@
       </div>
     </section>
 
-    <!-- ===== 07 WORK ===== -->
+    <!-- ===== 07 SELECTED WORK: a layered deck ===== -->
     <section class="work" id="work" aria-labelledby="work-title">
       <div class="wrap">
-        <header class="section-head section-head--split">
+        <header class="work__head">
           <div>
-            <p class="kicker mono">Selected work</p>
-            <h2 id="work-title" class="h1 reveal-lines"><span><em>Receipts.</em></span></h2>
+            <p class="kicker mono">Three launches · built from zero</p>
+            <h2 id="work-title" class="h1 reveal-lines">Selected <em>work.</em></h2>
           </div>
-          <p class="body-lg work__intro reveal">Rooms I walked into with nothing. Here's what we built, with the numbers to prove it.</p>
+          <p class="body-lg work__intro reveal">Three rooms I walked into with nothing. Flip through the stack, look closer, then open the full story.</p>
         </header>
 
-        <div class="work__grid">
-          <a class="work-card work-card--lg" href="#case-elles" data-case="elles">
-            <div class="work-card__media work-card__media--photo">
-              <img src="assets/img/work/elles/full-house.jpg" alt="A full house at Elle's Coventry with the brand on the big screen" loading="lazy" decoding="async">
-              <span class="work-card__metric">19→47%</span>
-              <span class="work-card__metric-label mono">newsletter open rate</span>
-            </div>
-            <div class="work-card__body">
-              <p class="mono work-card__client">Elle's Coventry · Two Friargate</p>
-              <h3 class="work-card__title">A launch from <em>zero.</em></h3>
-              <p class="work-card__line">Six kitchens, two bars, one opening night. 30,436 unique opens on a single send · Instagram 700 → 5K · 4.5★ from 366 reviews.</p>
-              <span class="work-card__cta mono">View case ↗</span>
-            </div>
-          </a>
+        <div class="deck" aria-roledescription="carousel" aria-label="Selected work">
+          <ol class="deck__index">
+            <li><button class="deck__tab" type="button" data-go="0" aria-controls="deck-card-0">
+              <span class="deck__num mono">01</span>
+              <span class="deck__tab-text"><span class="deck__tab-client mono">Elle's Coventry</span><span class="deck__tab-title">A launch from <em>zero.</em></span></span>
+              <span class="deck__tab-bar" aria-hidden="true"></span>
+            </button></li>
+            <li><button class="deck__tab" type="button" data-go="1" aria-controls="deck-card-1">
+              <span class="deck__num mono">02</span>
+              <span class="deck__tab-text"><span class="deck__tab-client mono">The Almanack</span><span class="deck__tab-title">Bringing a local <em>back.</em></span></span>
+              <span class="deck__tab-bar" aria-hidden="true"></span>
+            </button></li>
+            <li><button class="deck__tab" type="button" data-go="2" aria-controls="deck-card-2">
+              <span class="deck__num mono">03</span>
+              <span class="deck__tab-text"><span class="deck__tab-client mono">WLDD</span><span class="deck__tab-title">Building a creator <em>vertical.</em></span></span>
+              <span class="deck__tab-bar" aria-hidden="true"></span>
+            </button></li>
+          </ol>
 
-          <a class="work-card work-card--md" href="#case-almanack" data-case="almanack">
-            <div class="work-card__media work-card__media--photo">
-              <img src="assets/img/work/almanack/bar.jpg" alt="The Almanack bar in Kenilworth after the relaunch" loading="lazy" decoding="async">
-              <span class="work-card__metric">200+</span>
-              <span class="work-card__metric-label mono">guests on relaunch night</span>
-            </div>
-            <div class="work-card__body">
-              <p class="mono work-card__client">The Almanack · Kenilworth</p>
-              <h3 class="work-card__title">Bringing a local <em>back.</em></h3>
-              <p class="work-card__line">A gastropub relaunch: hand-drawn walls, tasting nights, a quiz that doubled to 30 covers, and Mum &amp; Baby sessions selling 35 tickets a week.</p>
-              <span class="work-card__cta mono">View case ↗</span>
-            </div>
-          </a>
+          <div class="deck__stage">
+            <div class="deck__stack" tabindex="0" aria-label="Project cards. Use the left and right arrow keys to flip.">
 
-          <a class="work-card work-card--sm" href="#case-wldd" data-case="wldd">
-            <div class="work-card__media tone-sand">
-              <span class="work-card__metric">300+</span>
-              <span class="work-card__metric-label mono">creators · 15+ campaigns</span>
-            </div>
-            <div class="work-card__body">
-              <p class="mono work-card__client">WLDD · Bangalore</p>
-              <h3 class="work-card__title">Building a creator <em>vertical.</em></h3>
-              <p class="work-card__line">Upstox, Max Fashion, Vantara, Damensch. Founding hire to a 10-person team.</p>
-              <span class="work-card__cta mono">View case ↗</span>
-            </div>
-          </a>
+              <article class="deck__card" id="deck-card-0" data-case-id="elles" aria-roledescription="slide" aria-label="1 of 3: Elle's Coventry, a launch from zero">
+                <div class="deck__media"><img src="assets/img/work/elles/full-house.jpg" alt="A full house at Elle's Coventry with the brand on the big screen" decoding="async" draggable="false"></div>
+                <div class="deck__face">
+                  <p class="deck__client mono">Elle's Coventry · Two Friargate</p>
+                  <h3 class="deck__title">A launch from <em>zero.</em></h3>
+                  <p class="deck__metric"><b>19→47%</b><span>newsletter open rate</span></p>
+                </div>
+                <div class="deck__peek">
+                  <dl class="deck__nums">
+                    <div><dt>19→47%</dt><dd>newsletter open rate</dd></div>
+                    <div><dt>30,436</dt><dd>unique opens on one B2B send</dd></div>
+                  </dl>
+                  <p class="deck__line"><b>The brief.</b> Six kitchens, two bars, one launch date, and no marketing at all.</p>
+                  <p class="deck__line"><b>What I did.</b> Built the whole function: website, email, media partners, a creator database and a weekly events programme.</p>
+                  <a class="deck__cta" href="#case-elles" data-case="elles">See the full story <i aria-hidden="true">→</i></a>
+                </div>
+                <button class="deck__toggle mono" type="button" aria-expanded="false">Look closer <i aria-hidden="true">+</i></button>
+              </article>
 
+              <article class="deck__card" id="deck-card-1" data-case-id="almanack" aria-roledescription="slide" aria-label="2 of 3: The Almanack, bringing a local back">
+                <div class="deck__media"><img src="assets/img/work/almanack/bar.jpg" alt="The Almanack bar in Kenilworth after the relaunch" decoding="async" draggable="false"></div>
+                <div class="deck__face">
+                  <p class="deck__client mono">The Almanack · Kenilworth</p>
+                  <h3 class="deck__title">Bringing a local <em>back.</em></h3>
+                  <p class="deck__metric"><b>200+</b><span>guests on relaunch night</span></p>
+                </div>
+                <div class="deck__peek">
+                  <dl class="deck__nums">
+                    <div><dt>200+</dt><dd>guests on relaunch night</dd></div>
+                    <div><dt>15→30</dt><dd>quiz-night covers</dd></div>
+                  </dl>
+                  <p class="deck__line"><b>The brief.</b> A much-loved pub, closed and coming back, in a town wary of change.</p>
+                  <p class="deck__line"><b>What I did.</b> Tasting nights, a menu shoot, live music and weekly events that gave locals a reason to return.</p>
+                  <a class="deck__cta" href="#case-almanack" data-case="almanack">See the full story <i aria-hidden="true">→</i></a>
+                </div>
+                <button class="deck__toggle mono" type="button" aria-expanded="false">Look closer <i aria-hidden="true">+</i></button>
+              </article>
+
+              <article class="deck__card deck__card--grid" id="deck-card-2" data-case-id="wldd" aria-roledescription="slide" aria-label="3 of 3: WLDD, building a creator vertical">
+                <div class="deck__media deck__media--grid" aria-hidden="true"><div class="net-grid"></div></div>
+                <div class="deck__face">
+                  <p class="deck__client mono">WLDD · Bangalore</p>
+                  <h3 class="deck__title">Building a creator <em>vertical.</em></h3>
+                  <p class="deck__metric"><b>300+</b><span>creators in a network I built</span></p>
+                </div>
+                <div class="deck__peek">
+                  <dl class="deck__nums">
+                    <div><dt>300+</dt><dd>creators in the network</dd></div>
+                    <div><dt>95%</dt><dd>kept coming back</dd></div>
+                  </dl>
+                  <p class="deck__line"><b>The brief.</b> A brand-new creator vertical with no team, no rate card and no playbook.</p>
+                  <p class="deck__line"><b>What I did.</b> Built a 300-creator network, held a 65% margin and grew it into a 10-person team.</p>
+                  <a class="deck__cta" href="#case-wldd" data-case="wldd">See the full story <i aria-hidden="true">→</i></a>
+                </div>
+                <button class="deck__toggle mono" type="button" aria-expanded="false">Look closer <i aria-hidden="true">+</i></button>
+              </article>
+
+            </div>
+
+            <div class="deck__controls">
+              <button class="deck__arrow" type="button" data-dir="-1" aria-label="Previous project">←</button>
+              <p class="deck__count mono" aria-live="polite"><span>01</span> / 03</p>
+              <button class="deck__arrow" type="button" data-dir="1" aria-label="Next project">→</button>
+              <p class="deck__hint mono"><span class="deck__hint-fine">Drag or use ← → to flip · hover to look closer</span><span class="deck__hint-touch">Swipe to flip · tap a card to look closer</span></p>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -253,7 +253,7 @@
     qsa('.scribble path').forEach((p) => {
       if (p.closest('.mission') || p.closest('.hero')) return;
       if (reduce) { p.style.strokeDashoffset = 0; return; }
-      gsap.to(p, { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut', delay: 0.3, scrollTrigger: { trigger: p.closest('.stat, .story__portrait, .work-card') || p, start: 'top 78%', once: true } });
+      gsap.to(p, { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut', delay: 0.3, scrollTrigger: { trigger: p.closest('.stat, .story__portrait') || p, start: 'top 78%', once: true } });
     });
     if (reduce) qsa('.mission .scribble path').forEach((p) => { p.style.strokeDashoffset = 0; });
 
@@ -338,10 +338,6 @@
         });
       });
 
-      // Work: metric parallax inside each card
-      qsa('.work-card__media').forEach((m) => {
-        gsap.fromTo(qsa('.work-card__metric, .work-card__metric-label', m), { y: 50 }, { y: -30, ease: 'none', scrollTrigger: { trigger: m.closest('.work-card'), start: 'top bottom', end: 'bottom top', scrub: true } });
-      });
 
       return () => {
         ScrollTrigger.removeEventListener('refreshInit', sizeStory);
@@ -356,10 +352,6 @@
     });
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.fromTo('.work-card', { autoAlpha: 0, y: 60 }, {
-        autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.1,
-        scrollTrigger: { trigger: '.work__grid', start: 'top 80%', once: true }
-      });
       gsap.fromTo('.cta__open, .cta__card, .cta__meta', { autoAlpha: 0, y: 24 }, { y: 0,
         autoAlpha: 1, duration: 1.2, stagger: 0.15, delay: 0.4,
         scrollTrigger: { trigger: '.cta', start: 'top 60%', once: true }
@@ -482,6 +474,173 @@
         showToast('you found it. now email me.');
       }
     });
+  }
+
+  /* ==========================================================================
+     SELECTED WORK: a layered deck you flip, peek into, then open
+     ========================================================================== */
+  function setupDeck() {
+    const deck = qs('.deck');
+    if (!deck) return;
+    const stack = qs('.deck__stack', deck);
+    const cards = qsa('.deck__card', deck);
+    const tabs = qsa('.deck__tab', deck);
+    const countEl = qs('.deck__count span', deck);
+    const n = cards.length;
+    const D = reduce ? 0 : 1;
+    let order = cards.map((_, i) => i);
+    let busy = false;
+    let drag = null;
+
+    // WLDD has no photos, so its cover is the creator network itself
+    const grid = qs('.deck__media--grid .net-grid', deck);
+    if (grid) {
+      for (let i = 0; i < 180; i++) {
+        const t = document.createElement('span');
+        if (rand() < 0.55) t.className = 'is-on';
+        grid.appendChild(t);
+      }
+    }
+
+    const pose = (pos) => {
+      const step = window.innerWidth <= 768 ? 20 : 30;
+      return { x: 0, y: -pos * step, scale: 1 - pos * 0.055, rotation: pos === 0 ? 0 : pos === 1 ? -2.2 : 2.6, autoAlpha: 1, zIndex: 30 - pos };
+    };
+
+    const setPeek = (card, on) => {
+      card.classList.toggle('is-peek', on);
+      const btn = qs('.deck__toggle', card);
+      btn.setAttribute('aria-expanded', String(on));
+      btn.firstChild.nodeValue = on ? 'Close ' : 'Look closer ';
+    };
+
+    const sync = () => {
+      const front = order[0];
+      cards.forEach((c, i) => {
+        const isFront = i === front;
+        c.classList.toggle('is-front', isFront);
+        c.setAttribute('aria-hidden', String(!isFront));
+        c.inert = !isFront;
+        if (!isFront) setPeek(c, false);
+      });
+      tabs.forEach((t, i) => {
+        t.classList.toggle('is-active', i === front);
+        t.setAttribute('aria-current', i === front ? 'true' : 'false');
+      });
+      countEl.textContent = String(front + 1).padStart(2, '0');
+    };
+
+    const layout = (dur = 0.8) => {
+      order.forEach((ci, pos) => gsap.to(cards[ci], { ...pose(pos), duration: dur * D, ease: 'expo.out', overwrite: 'auto' }));
+      sync();
+    };
+
+    // peel the top card away; it slides to the back of the stack
+    const next = () => {
+      if (busy) return;
+      busy = true;
+      const f = cards[order[0]];
+      setPeek(f, false);
+      gsap.to(f, {
+        x: -stack.offsetWidth * 1.1, rotation: -10, autoAlpha: 0, duration: 0.45 * D, ease: 'power2.in', overwrite: true,
+        onComplete: () => {
+          order.push(order.shift());
+          gsap.set(f, { ...pose(n - 1), autoAlpha: 0 });
+          layout();
+          busy = false;
+        }
+      });
+    };
+
+    // bring the last card back in from the left, onto the top
+    const prev = () => {
+      if (busy) return;
+      busy = true;
+      order.unshift(order.pop());
+      const f = cards[order[0]];
+      gsap.set(f, { x: -stack.offsetWidth * 1.1, y: 0, scale: 1, rotation: -10, autoAlpha: 0, zIndex: 40 });
+      layout(0.9);
+      gsap.delayedCall(0.35 * D, () => { busy = false; });
+    };
+
+    const goTo = (i) => {
+      const k = order.indexOf(i);
+      if (k <= 0) return;
+      order = [...order.slice(k), ...order.slice(0, k)];
+      layout();
+    };
+
+    order.forEach((ci, pos) => gsap.set(cards[ci], pose(pos)));
+    sync();
+
+    qsa('.deck__arrow', deck).forEach((b) => b.addEventListener('click', () => (b.dataset.dir === '1' ? next() : prev())));
+    tabs.forEach((t) => t.addEventListener('click', () => goTo(+t.dataset.go)));
+    stack.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    });
+    cards.forEach((c) => qs('.deck__toggle', c).addEventListener('click', (e) => {
+      e.stopPropagation();
+      setPeek(c, !c.classList.contains('is-peek'));
+    }));
+
+    // drag / swipe the top card; a tap looks closer (touch) or opens the story (mouse)
+    stack.addEventListener('pointerdown', (e) => {
+      const card = e.target.closest('.deck__card.is-front');
+      if (!card || busy || e.target.closest('a, button')) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      drag = { card, id: e.pointerId, x0: e.clientX, y0: e.clientY, dx: 0, moved: false, type: e.pointerType };
+    });
+    stack.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x0;
+      const dy = e.clientY - drag.y0;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        if (Math.abs(dy) > Math.abs(dx)) { drag = null; return; } // a vertical swipe is a page scroll
+        drag.moved = true;
+        drag.card.classList.add('is-dragging');
+        drag.card.setPointerCapture(e.pointerId);
+        setPeek(drag.card, false);
+      }
+      drag.dx = dx;
+      gsap.set(drag.card, { x: dx, rotation: dx * 0.035 });
+    });
+    const release = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const { card, dx, moved, type } = drag;
+      drag = null;
+      card.classList.remove('is-dragging');
+      if (!moved) {
+        if (type === 'mouse' || card.classList.contains('is-peek')) openCase(card.dataset.caseId, card);
+        else setPeek(card, true);
+        return;
+      }
+      const limit = Math.min(110, stack.offsetWidth * 0.22);
+      if (dx < -limit) next();
+      else if (dx > limit) prev();
+      else gsap.to(card, { x: 0, rotation: 0, duration: 0.7 * D, ease: 'elastic.out(1, 0.6)' });
+    };
+    stack.addEventListener('pointerup', release);
+    stack.addEventListener('pointercancel', () => {
+      if (drag && drag.moved) {
+        drag.card.classList.remove('is-dragging');
+        gsap.to(drag.card, { x: 0, rotation: 0, duration: 0.4 * D });
+      }
+      drag = null;
+    });
+
+    // the stack deals itself in when it first scrolls into view
+    if (!reduce) {
+      gsap.set(cards, { autoAlpha: 0 });
+      ScrollTrigger.create({
+        trigger: deck, start: 'top 78%', once: true,
+        onEnter: () => order.forEach((ci, pos) => gsap.fromTo(cards[ci],
+          { y: 140 + pos * 30, rotation: pos === 0 ? 4 : pos === 1 ? -7 : 8, autoAlpha: 0 },
+          { ...pose(pos), duration: 1.25, delay: (n - 1 - pos) * 0.14, ease: 'expo.out' }))
+      });
+    }
+    window.addEventListener('resize', () => layout(0));
   }
 
   /* ==========================================================================
@@ -639,7 +798,17 @@
     sheet.scrollTop = 0;
     history.replaceState(null, '', `#case-${id}`);
 
-    if (!wasOpen && !reduce) {
+    const fromCard = fromEl && fromEl.closest ? fromEl.closest('.deck__card') : null;
+    if (!wasOpen && !reduce && fromCard) {
+      // morph: the sheet grows out of the card you opened
+      gsap.set(sheet, { yPercent: 0 });
+      const r = fromCard.getBoundingClientRect();
+      const sr = sheet.getBoundingClientRect();
+      const px = (v) => Math.max(0, Math.round(v)) + 'px';
+      const from = 'inset(' + px(r.top - sr.top) + ' ' + px(sr.right - r.right) + ' ' + px(sr.bottom - r.bottom) + ' ' + px(r.left - sr.left) + ' round 18px)';
+      gsap.fromTo(sheet, { clipPath: from }, { clipPath: 'inset(0px 0px 0px 0px round 16px)', duration: 0.95, ease: 'expo.inOut', clearProps: 'clipPath' });
+      gsap.fromTo('.case__backdrop', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'power2.out' });
+    } else if (!wasOpen && !reduce) {
       gsap.fromTo(sheet, { yPercent: 100 }, { yPercent: 0, duration: 0.9, ease: 'expo.out' });
       gsap.fromTo('.case__backdrop', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'power2.out' });
     }
@@ -743,6 +912,7 @@
     setupCopy();
     setupFooter();
     setupCases();
+    setupDeck();
 
     await warm;
     await gsap.to(counter, { v: 100, duration: reduce ? 0.1 : 0.45, ease: 'power2.inOut', onUpdate: render });
