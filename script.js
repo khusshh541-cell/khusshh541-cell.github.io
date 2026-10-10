@@ -291,10 +291,8 @@
   }
 
   /* ==========================================================================
-     6. RESPONSIVE MOTION (pillars, story, work parallax)
+     6. RESPONSIVE MOTION (pillars)
      ========================================================================== */
-  const story = qs('.story');
-  const track = qs('.story__track');
 
   function setupResponsiveMotion() {
     const mm = gsap.matchMedia();
@@ -309,44 +307,10 @@
         gsap.to(card, { '--s': 0.93, ease: 'none', scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 25%', scrub: true } });
       });
 
-      // Story: vertical scroll drives a horizontal track
-      const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
-      const sizeStory = () => { story.style.height = `${dist() + window.innerHeight}px`; };
-      sizeStory();
-      ScrollTrigger.addEventListener('refreshInit', sizeStory);
-
-      const tween = gsap.to(track, {
-        x: () => -dist(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: story,
-          start: 'top top',
-          end: () => `+=${dist()}`,
-          scrub: true,
-          invalidateOnRefresh: true
-        }
-      });
-
-      qsa('.chapter').forEach((ch) => {
-        gsap.fromTo(qs('.chapter__num', ch), { xPercent: 25 }, {
-          xPercent: -25, ease: 'none',
-          scrollTrigger: { trigger: ch, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true }
-        });
-        gsap.fromTo(qsa('.chapter__tag, .chapter__title, p:not(.chapter__tag)', ch), { autoAlpha: 0, y: 30 }, {
-          autoAlpha: 1, y: 0, duration: 1, stagger: 0.08,
-          scrollTrigger: { trigger: ch, containerAnimation: tween, start: 'left 80%', once: true }
-        });
-      });
-
-
-      return () => {
-        ScrollTrigger.removeEventListener('refreshInit', sizeStory);
-        story.style.height = '';
-      };
     });
 
     mm.add('(max-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-      qsa('.chapter, .story__intro, .story__outro, .pillar').forEach((el) => {
+      qsa('.pillar').forEach((el) => {
         gsap.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
       });
     });
